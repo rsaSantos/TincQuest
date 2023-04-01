@@ -13,5 +13,5 @@ class User(Base):
     password = Column(String)
     wallet_address = Column(String, unique=True, index=True)
 
-    # joinedEvents
     ownedEvents = relationship("Event", back_populates="owner")
+    participations = relationship("Participant", back_populates="user")

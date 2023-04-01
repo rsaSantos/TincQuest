@@ -22,10 +22,14 @@ class Event(Base):
     final_date = Column(DateTime)
     event_address = Column(String)
     event_state = Column(String)
+    abi = Column(String)
 
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("User", back_populates="ownedEvents")
 
     prize_id = Column(Integer, ForeignKey("prizes.id"))
     prize = relationship("Prize", uselist=False, back_populates="event")
-    # participants = relationship("User", secondary="event_participants")
+    
+    participants = relationship("Participant", back_populates="event")
+
+    questions = relationship("Question", back_populates="event")

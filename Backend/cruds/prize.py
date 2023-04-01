@@ -11,7 +11,7 @@ def create_prize_from_prize_create(prize: prize_schema.Prize) -> prize_model.Pri
     )
 
 def create_prize(db: Session, prize: prize_schema.Prize):
-    db_prize = create_prize(prize)
+    db_prize = create_prize_from_prize_create(prize)
     db.add(db_prize)
     db.commit()
     db.refresh(db_prize)

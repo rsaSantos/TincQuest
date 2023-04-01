@@ -1,4 +1,4 @@
-contract_address = "0x2faF2A8f2F522c5728332d635F283059AFa006a7"
+contract_address = "0x338313f9AE60848e01380074B30A4B38f89995D6"
 
 import os
 from dotenv import load_dotenv

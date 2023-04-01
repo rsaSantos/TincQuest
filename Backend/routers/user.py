@@ -6,15 +6,11 @@ from sqlalchemy.orm import Session
 from Backend.auth.auth import ACCESS_TOKEN_EXPIRE_MINUTES, authenticate_user, create_access_token, Token, get_password_hash, get_current_user
 from ..schemas import user as user_schema
 from ..cruds import user as user_crud
-from ..models import user as user_model
+
 
 from Backend.dependencies import get_db
 
-from ..database.database import SessionLocal, engine
-
 from fastapi.security import OAuth2PasswordRequestForm
-
-user_model.Base.metadata.create_all(bind=engine)
 
 
 user_router = FastAPI()

@@ -10,10 +10,6 @@ from dotenv import load_dotenv
 # Import keys and other environment variables from .env file.
 load_dotenv()
 
-# Connect to Goerli network using Alchemy API
-#alchemy_url_goerli = "https://eth-goerli.g.alchemy.com/v2/LyM1lXscL63PmA1uZjBnaQIHHahg_B6c"
-#alchemy_url_sepolia = "https://eth-sepolia.g.alchemy.com/v2/KC1rptPORiKWv6JckOPlu6G2EZQkIK52"
-
 # Using HTTPProvider
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 
