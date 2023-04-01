@@ -3,6 +3,8 @@ from pydantic import BaseModel
 
 from . import user as user_schema
 from . import prize as prize_schema
+from . import participant as participant_schema
+from . import question as question_schema
 
 class EventBase(BaseModel):
     name: str
@@ -18,6 +20,7 @@ class EventCreate(EventBase):
     event_address: str
     abi:str
     prize: prize_schema.Prize
+    questions: list[question_schema.QuestionCreate]
 
 
 class EventDetail(EventBase):
@@ -35,6 +38,7 @@ class EventDetail(EventBase):
     owner: user_schema.User
     prize: prize_schema.Prize
     abi:str
+    participants: list[participant_schema.Participant]
 
     class Config:
         orm_mode = True
@@ -53,6 +57,7 @@ class EventOwned(EventBase):
     owner_id: int
     owner: user_schema.User
     prize: prize_schema.Prize
+    participants: list[participant_schema.Participant]
 
     class Config:
         orm_mode = True

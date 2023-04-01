@@ -29,4 +29,7 @@ class Event(Base):
 
     prize_id = Column(Integer, ForeignKey("prizes.id"))
     prize = relationship("Prize", uselist=False, back_populates="event")
-    # participants = relationship("User", secondary="event_participants")
+    
+    participants = relationship("Participant", back_populates="event")
+
+    questions = relationship("Question", back_populates="event")
