@@ -1,3 +1,5 @@
 **/__pycache__
 Web3/.env
 Web3/compiled_event_code.json
+Web3/event_abi.json
+Web3/test.txt
