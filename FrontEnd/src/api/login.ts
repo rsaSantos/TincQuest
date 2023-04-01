@@ -1,4 +1,4 @@
-import { Register } from "@/models/registerModel"
+import { Register } from '@/models/registerModel'
 
 export const loginRequest = async (username: string, password: string) => {
   try {
@@ -7,17 +7,20 @@ export const loginRequest = async (username: string, password: string) => {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'application/json' },
       body: 'username=' + username + '&password=' + password
     })
-    const data = await response.json()
-
-    return data.access_token
+    if (response.status === 200) {
+      const data = await response.json()
+      return data.access_token
+    } else {
+      alert('Wrong username or password')
+    }
   } catch (error) {
-    console.log('error')
+    alert('Wrong username or password')
   }
 }
 
-export const registerRequest = async (register: Register) => {  
+export const registerRequest = async (register: Register) => {
   try {
-    const response = await fetch('http://127.0.0.1:8000/token', {
+    const response = await fetch('http://127.0.0.1:8000/user', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(register)

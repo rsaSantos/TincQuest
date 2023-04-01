@@ -2,14 +2,14 @@
 import { useRoute } from 'vue-router'
 import { ref } from 'vue'
 import EventInfo from '@/components/EventInfo.vue'
-import EventLeaderBoard from '@/components/EventLeaderBoard.vue'
 import EventQuestions from '@/components/EventQuestions.vue'
+import EventLeaderBoard from '@/components/EventLeaderBoard.vue'
+import { joinEvent } from '@/api/joinevent'
 
 const route = useRoute()
 
 enum Tabs {
   info = 'info',
-  leaderboard = 'leaderboard',
   questions = 'questions'
 }
 
@@ -25,22 +25,13 @@ const changeTab = (tab: Tabs) => {
       <img src="@/assets/Images/defaultEventImage.jpg" class="rounded-full w-32 absolute -top-7" />
       <div class="pl-36 space-y-2">
         <div class="text-2xl font-bold">Workshop Test</div>
-        <div>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat, at? Soluta nostrum
-          temporibus possimus enim quasi nihil voluptate explicabo unde libero, ipsam officiis animi
-          blanditiis magnam nemo saepe, dolorem obcaecati? Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Eligendi delectus sequi, laudantium ea illo dolorum esse odit corrupti
-          provident omnis quisquam amet dolore mollitia architecto cupiditate quas qui quidem!
-          Similique? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus
-          accusantium iure aperiam ea eligendi nam natus dignissimos sit error, sequi eius
-          voluptatum, minima inventore nisi odio molestiae pariatur cumque recusandae! Lorem ipsum
-          dolor sit amet consectetur adipisicing elit. Fuga officiis vel corrupti quis
-          necessitatibus eius consequatur tempora quae! Quae, tenetur nulla. Dolore a minus deleniti
-          incidunt architecto perspiciatis fuga explicabo.
-        </div>
+        <EventLeaderBoard />
       </div>
-      <div class="w-full justify-end flex">
-        <button class="bg-white px-2 py-1 rounded-md hover:bg-slate-400 text-black duration-300">
+      <div class="w-full justify-end flex pt-2">
+        <button
+          class="bg-white px-2 py-1 rounded-md hover:bg-slate-400 text-black duration-300"
+          @click="joinEvent(route.params.id)"
+        >
           Join Event
         </button>
       </div>
@@ -52,16 +43,7 @@ const changeTab = (tab: Tabs) => {
       >
         Info
       </button>
-      <button
-        @click="changeTab(Tabs.leaderboard)"
-        :class="
-          openTab === Tabs.leaderboard
-            ? 'text-black font-semibold border-b-2 border-black'
-            : ' hover:font-semibold'
-        "
-      >
-        LeaderBoard
-      </button>
+
       <button
         @click="changeTab(Tabs.questions)"
         :class="
@@ -76,7 +58,6 @@ const changeTab = (tab: Tabs) => {
     <hr class="pb-5" />
     <div class="pb-5">
       <EventInfo v-if="openTab === Tabs.info" />
-      <EventLeaderBoard v-if="openTab === Tabs.leaderboard" />
       <EventQuestions v-if="openTab === Tabs.questions" />
     </div>
   </div>
