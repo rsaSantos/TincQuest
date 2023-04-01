@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import EventInfo from '@/components/EventInfo.vue'
 import EventQuestions from '@/components/EventQuestions.vue'
 import EventLeaderBoard from '@/components/EventLeaderBoard.vue'
+import { joinEvent } from '@/api/joinevent'
 
 const route = useRoute()
 
@@ -27,7 +28,10 @@ const changeTab = (tab: Tabs) => {
         <EventLeaderBoard />
       </div>
       <div class="w-full justify-end flex pt-2">
-        <button class="bg-white px-2 py-1 rounded-md hover:bg-slate-400 text-black duration-300">
+        <button
+          class="bg-white px-2 py-1 rounded-md hover:bg-slate-400 text-black duration-300"
+          @click="joinEvent(route.params.id)"
+        >
           Join Event
         </button>
       </div>
