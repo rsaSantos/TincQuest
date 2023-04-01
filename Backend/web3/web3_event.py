@@ -1,10 +1,14 @@
 import os
 from dotenv import load_dotenv
 from web3 import Web3
-from ..cruds import event as event_crud
+from ..cruds import participant as participant_crud
+from ..cruds import user as user_crud
+from fastapi import Depends
+from Backend.dependencies import get_db
+from sqlalchemy.orm import Session
 
 # Terminate contract
-def terminate_event(ABI, contract_address, event_id):
+def terminate_event(db, ABI, contract_address, event_id):
     print("Terminating event...")
 
     w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
@@ -19,13 +23,14 @@ def terminate_event(ABI, contract_address, event_id):
     print("Number of winners: ", n_winners)
 
     # Get winners
-    
-    winners = event_crud.get_winners(event_id, n_winners)
-
-    print("Winners: ", winners)
+    winners_ids = participant_crud.get_participant_winner(db, event_id, n_winners)
+    winners_addresses = []
+    for winner in winners_ids:
+        winners_addresses.append(user_crud.get_user(db, winner.user_id).wallet_address)
+    print("Winners: ", winners_addresses)
 
     # Transaction to terminate the event
-    tx = event_contract.functions.terminate(winners).build_transaction({
+    tx = event_contract.functions.terminate(winners_addresses).build_transaction({
         'from': os.getenv("TINCQUEST"),
         'nonce': w3.eth.get_transaction_count(os.getenv("TINCQUEST")),
         'gas': 1000000,
