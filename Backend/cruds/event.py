@@ -15,11 +15,12 @@ def create_event_from_event_create(event: event_schema.EventCreate, owner_id: in
         entrance_fee=event.entrance_fee,
         inicial_date=event.inicial_date,
         final_date=event.final_date,
-        event_address="aaaa", # TODO Call contract to create event
+        event_address=event.event_address,
         event_state=event_model.EventState.NEW,
         owner_id=owner_id,
         prize=prize,
         prize_id=prize.id,
+        abi=event.abi
     )
 
 def get_owned_events(db: Session, owner_id: int):
