@@ -6,7 +6,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'events',
-      component: import('../views/Events.vue')
+      component: () => import('../views/Events.vue')
     },
     {
       path: '/myevents',
@@ -22,8 +22,25 @@ const router = createRouter({
       path: '/event/:id',
       name: 'event',
       component: () => import('../views/Event.vue')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/Login.vue')
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('../views/Register.vue')
+    },
+    {
+      path: '/createevent',
+      name: 'createevent',
+      component: () => import('../views/CreateEvent.vue')
     }
   ]
 })
 
 export default router
+
+export const UNPROTECTED_ROUTES = ['login', 'register']

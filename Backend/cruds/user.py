@@ -4,6 +4,7 @@ from ..schemas import user as user_schema
 
 from ..models import user as user_model
 
+
 def create_user_from_user_create(user: user_schema.UserCreate) -> user_model.User:
     return user_model.User(
         username=user.username,
@@ -11,6 +12,7 @@ def create_user_from_user_create(user: user_schema.UserCreate) -> user_model.Use
         name=user.name,
         wallet_address=user.wallet_address,
     )
+
 
 def get_user(db: Session, user_id: int):
     return db.query(user_model.User).filter(user_model.User.id == user_id).first()

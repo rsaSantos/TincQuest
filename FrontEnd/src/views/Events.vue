@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <table class="w-screen mt-10">
+  <table class="mt-10">
     <div class="px-5">
       <tr class="table w-full table-fixed">
         <td class="pl-20">Name</td>
@@ -15,7 +15,7 @@ import { RouterLink } from 'vue-router'
       </tr>
     </div>
     <div class="px-5 space-y-2 pt-2 flex flex-col">
-      <RouterLink v-for="i in 10" :key="i" :to="{ name: 'event', params: { id: i } }">
+      <RouterLink v-for="i in 12" :key="i" :to="{ name: 'event', params: { id: i } }">
         <EventItem
           :event="{
             name: 'test',
