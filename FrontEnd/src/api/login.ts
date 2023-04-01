@@ -27,7 +27,7 @@ export const registerRequest = async (register: Register) => {
     })
     const data = await response.json()
 
-    return data.access_token
+    return data
   } catch (error) {
     console.log(error)
   }
