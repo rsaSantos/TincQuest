@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import router from '@/router/router'
 import { useAuthStore } from '@/stores/auth'
 import { ref } from 'vue'
 
@@ -9,13 +10,18 @@ const name = ref('')
 const password = ref('')
 const wallet_address = ref('')
 
-const register = () => {
-  authStore.register({
+const register = async () => {
+  const response = await authStore.register({
     username: username.value,
     name: name.value,
     password: password.value,
     wallet_address: wallet_address.value
   })
+  if (response) {
+    router.push('/login')
+  } else {
+    alert('Registration failed')
+  }
 }
 </script>
 <template>
