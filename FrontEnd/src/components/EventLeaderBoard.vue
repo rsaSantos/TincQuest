@@ -7,12 +7,13 @@
         <th>Username</th>
         <th>Points</th>
       </tr>
+      <hr class="pb-2" />
     </div>
-    <div class="space-y-2 pt-2 h-[76vh] flex flex-col overflow-auto">
+    <div class="space-y-2 pt-2 h-[71vh] flex flex-col overflow-auto">
       <div
         v-for="i in 10"
         :key="i"
-        class="flex items-center justify-around align-middle mb-2 py-4 text-slate-300"
+        class="flex items-center justify-around align-middle py-4 text-slate-300"
         :class="i % 2 === 0 ? 'bg-slate-500' : 'bg-slate-600'"
       >
         <td>Jorge</td>

@@ -23,7 +23,7 @@ const id = route.params.id
 
 <template>
   <div class="px-5 flex space-x-5 w-full">
-    <div class="bg-slate-600 text-white rounded-lg w-[15%] h-[91vh]">
+    <div class="bg-slate-600 text-white rounded-lg w-[15%] h-[89vh] mt-2">
       <div class="space-y-2">
         <div class="text-2xl font-bold pt-5 text-center">Workshop Test</div>
         <div class="w-full justify-center flex">
