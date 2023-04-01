@@ -20,6 +20,11 @@ alembic revision -m "comment"
 
 alembic upgrade head
 
+## Auth
+
+pip install "python-jose[cryptography]"
+pip install "passlib[bcrypt]"
+
 ## Run Backend
 
 uvicorn Backend.main:tincQuest --reload

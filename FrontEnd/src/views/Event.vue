@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { ref } from 'vue'
+import EventInfo from '@/components/EventInfo.vue'
+import EventLeaderBoard from '@/components/EventLeaderBoard.vue'
+import EventQuestions from '@/components/EventQuestions.vue'
 
 const route = useRoute()
 
@@ -14,36 +17,67 @@ const openTab = ref(Tabs.info)
 const changeTab = (tab: Tabs) => {
   openTab.value = tab
 }
-
-console.log(route.params.id)
 </script>
 
 <template>
-  <div class="bg-slate-700 text-white mx-10 rounded-lg p-4 relative mt-16 min-h-40">
-    <img src="@/assets/Images/defaultEventImage.jpg" class="rounded-full w-32 absolute -top-7" />
-    <div class="pl-36">
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat, at? Soluta nostrum
-      temporibus possimus enim quasi nihil voluptate explicabo unde libero, ipsam officiis animi
-      blanditiis magnam nemo saepe, dolorem obcaecati? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Eligendi delectus sequi, laudantium ea illo dolorum esse odit corrupti
-      provident omnis quisquam amet dolore mollitia architecto cupiditate quas qui quidem!
-      Similique? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus accusantium
-      iure aperiam ea eligendi nam natus dignissimos sit error, sequi eius voluptatum, minima
-      inventore nisi odio molestiae pariatur cumque recusandae! Lorem ipsum dolor sit amet
-      consectetur adipisicing elit. Fuga officiis vel corrupti quis necessitatibus eius consequatur
-      tempora quae! Quae, tenetur nulla. Dolore a minus deleniti incidunt architecto perspiciatis
-      fuga explicabo.
+  <div class="mx-10">
+    <div class="bg-slate-600 text-white rounded-lg p-4 relative mt-16 min-h-40">
+      <img src="@/assets/Images/defaultEventImage.jpg" class="rounded-full w-32 absolute -top-7" />
+      <div class="pl-36 space-y-2">
+        <div class="text-2xl font-bold">Workshop Test</div>
+        <div>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat, at? Soluta nostrum
+          temporibus possimus enim quasi nihil voluptate explicabo unde libero, ipsam officiis animi
+          blanditiis magnam nemo saepe, dolorem obcaecati? Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Eligendi delectus sequi, laudantium ea illo dolorum esse odit corrupti
+          provident omnis quisquam amet dolore mollitia architecto cupiditate quas qui quidem!
+          Similique? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus
+          accusantium iure aperiam ea eligendi nam natus dignissimos sit error, sequi eius
+          voluptatum, minima inventore nisi odio molestiae pariatur cumque recusandae! Lorem ipsum
+          dolor sit amet consectetur adipisicing elit. Fuga officiis vel corrupti quis
+          necessitatibus eius consequatur tempora quae! Quae, tenetur nulla. Dolore a minus deleniti
+          incidunt architecto perspiciatis fuga explicabo.
+        </div>
+      </div>
+      <div class="w-full justify-end flex">
+        <button class="bg-white px-2 py-1 rounded-md hover:bg-slate-400 text-black duration-300">
+          Join Event
+        </button>
+      </div>
     </div>
-    <div class="w-full justify-end flex">
-      <button class="bg-white px-2 py-1 rounded-md hover:bg-slate-400 text-black duration-300">
-        Join Event
+    <div class="pt-5 flex justify-center w-full space-x-4 text-lg text-slate-600">
+      <button
+        @click="changeTab(Tabs.info)"
+        :class="openTab === Tabs.info ? 'text-black font-semibold border-b-2 border-black' : ''"
+      >
+        Info
+      </button>
+      <button
+        @click="changeTab(Tabs.leaderboard)"
+        :class="
+          openTab === Tabs.leaderboard
+            ? 'text-black font-semibold border-b-2 border-black'
+            : ' hover:font-semibold'
+        "
+      >
+        LeaderBoard
+      </button>
+      <button
+        @click="changeTab(Tabs.questions)"
+        :class="
+          openTab === Tabs.questions
+            ? 'text-black font-semibold border-b-2 border-black'
+            : ' hover:font-semibold'
+        "
+      >
+        Questions
       </button>
     </div>
+    <hr class="pb-5" />
+    <div class="pb-5">
+      <EventInfo v-if="openTab === Tabs.info" />
+      <EventLeaderBoard v-if="openTab === Tabs.leaderboard" />
+      <EventQuestions v-if="openTab === Tabs.questions" />
+    </div>
   </div>
-  <div class="pt-5 flex justify-center w-full space-x-4 text-lg text-slate-600">
-    <button @click="changeTab(Tabs.info)">Info</button>
-    <button @click="changeTab(Tabs.leaderboard)">LeaderBoard</button>
-    <button @click="changeTab(Tabs.questions)">Questions</button>
-  </div>
-  <hr />
 </template>
