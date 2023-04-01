@@ -12,47 +12,224 @@ const entryFee = ref(0)
 const basePrize = ref(0)
 const prizePerInscription = ref(0)
 const prizeDestribution = ref([100])
+const questions = ref<
+  { question: string; answers: string[]; points: number; rightAnswer: string }[]
+>([{ question: '', answers: [], rightAnswer: '', points: 0 }])
+
+const onSubmit = () => {
+  console.log('submit')
+}
 </script>
 <template>
-  <form class="px-6 pt-5">
-    <div class="">
-      <div class="space-x-2">
-        <label for="name">Name</label>
-        <input type="text" id="name" v-model="name" class="rounded-md bg-slate-400 text-white" />
-      </div>
-      <div>
-        <input />
-        <label for="privEvent">Private Event</label>
+  <form class="px-6 pt-5" @submit.prevent="onSubmit">
+    <div class="space-y-4">
+      <div class="shadow-md p-4 rounded-md">
+        <span class="text-2xl font-semibold">Details</span>
+        <div class="flex space-x-5 items-center">
+          <div class="flex flex-col">
+            <label for="name">Name</label>
+            <input
+              required
+              type="text"
+              id="name"
+              v-model="name"
+              placeholder="Event Name"
+              class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label for="privEvent">Private Event</label>
+            <input required type="checkbox" v-model="privEvent" />
+          </div>
+        </div>
+        <div>
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            v-model="description"
+            placeholder="Event Description"
+            class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white w-full h-20"
+          ></textarea>
+        </div>
       </div>
 
-      <div>
-        <label for="description">Description</label>
-        <textarea
-          id="description"
-          v-model="description"
-          class="rounded-md bg-slate-400 w-full h-20 p-2 text-white"
-        ></textarea>
+      <div class="shadow-md p-4 rounded-md">
+        <span class="text-2xl font-semibold">Details</span>
+        <div class="flex space-x-4">
+          <div class="flex flex-col">
+            <label for="name">Inscriptions limit</label>
+            <input
+              required
+              type="number"
+              id="iLimit"
+              min:1
+              v-model="iLimit"
+              class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label for="name">Start Date</label>
+            <input
+              required
+              type="datetime-local"
+              v-model="startDate"
+              class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label for="name">End Date</label>
+            <input
+              required
+              type="datetime-local"
+              v-model="endDate"
+              class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label for="name">Inscription Fee</label>
+            <input
+              required
+              type="number"
+              id="entryFee"
+              min:0
+              v-model="entryFee"
+              class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+            />
+          </div>
+        </div>
       </div>
-      <div class="space-x-2">
-        <label for="name">Inscriptions limit</label>
-        <input
-          type="number"
-          id="iLimit"
-          min:1
-          v-model="iLimit"
-          class="rounded-md bg-slate-400 text-white h-8"
-        />
+
+      <div class="shadow-md p-4 rounded-md">
+        <span class="text-2xl font-semibold">Prizes</span>
+        <div>
+          <div class="flex space-x-4">
+            <div class="flex flex-col">
+              <label for="name">Base Prize</label>
+              <input
+                required
+                type="number"
+                id="basePrize"
+                min:0
+                v-model="basePrize"
+                class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+              />
+
+              <input />
+            </div>
+            <div class="flex flex-col">
+              <label for="name">Prize Per Inscription</label>
+              <input
+                required
+                type="number"
+                min:0
+                v-model="prizePerInscription"
+                class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+              />
+            </div>
+          </div>
+          <div class="flex flex-col pt-5 space-y-2">
+            <label for="name">Prize Distribution</label>
+
+            <input
+              required
+              v-for="(item, i) in prizeDestribution"
+              :key="i"
+              v-model="prizeDestribution[i]"
+              type="number"
+              class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+            />
+            <div class="flex justify-center">
+              <button
+                type="button"
+                @click="prizeDestribution.push(0)"
+                class="bg-slate-400 rounded-full font-bold w-10 text-2xl ml-10"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="space-x-2">
-        <label for="name">Inscriptions limit</label>
-        <input
-          type="number"
-          min:0
-          id="iLimit"
-          v-model="iLimit"
-          class="rounded-md bg-slate-400 text-white h-8"
-        />
+
+      <div class="shadow-md p-4 rounded-md">
+        <span class="text-2xl font-semibold">Challanges</span>
+        <div>
+          <div class="flex flex-col pt-5 space-y-2">
+            <div v-for="(item, i) in questions" :key="i">
+              <div class="flex flex-col">
+                <label for="question">Question {{ i }}</label>
+                <textarea
+                  :key="i"
+                  v-model="questions[i].question"
+                  placeholder="Write your Question"
+                  type="text"
+                  class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+                />
+              </div>
+              <div class="flex flex-col pt-5 items-center">
+                <label>Correct Answer</label>
+                <div>
+                  <input
+                    :key="i"
+                    v-model="questions[i].rightAnswer"
+                    placeholder="Write the correct answer"
+                    type="text"
+                    class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <span>Answer Options</span>
+                <div class="flex flex-col pt-5 space-y-2">
+                  <div v-for="(item, j) in questions[i].answers" :key="j">
+                    <div class="flex flex-col">
+                      <label for="question">Answer {{ j }}</label>
+                      <div>
+                        <input
+                          required
+                          :key="j"
+                          v-model="questions[i].answers[j]"
+                          placeholder="Write your Answer"
+                          type="text"
+                          class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex justify-start">
+                    <button
+                      type="button"
+                      @click="questions[i].answers.push('')"
+                      class="bg-orange-400 rounded-full p-2 text-white hover:bg-orange-700 duration-300"
+                    >
+                      New Answer Option
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <hr class="mt-5 border-black" />
+            </div>
+            <div class="flex justify-center">
+              <button
+                type="button"
+                @click="questions.push({ question: '', answers: [], rightAnswer: '', points: 0 })"
+                class="bg-slate-400 rounded-full font-bold w-10 text-2xl ml-10"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+    <div class="flex justify-center">
+      <button
+        class="my-5 bg-orange-500 hover:bg-orange-600 p-2 text-white rounded-md duration-300"
+        type="submit"
+      >
+        Submit Event
+      </button>
     </div>
   </form>
 </template>

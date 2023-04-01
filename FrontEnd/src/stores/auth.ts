@@ -32,7 +32,7 @@ export const useAuthStore = defineStore('auth', () => {
   const register = async (register: Register) => {
     try {
       const response = await registerRequest(register)
-      console.log(response)
+      return response
     } catch (error) {
       console.log(error)
     }

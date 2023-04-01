@@ -17,6 +17,8 @@ const openTab = ref(Tabs.info)
 const changeTab = (tab: Tabs) => {
   openTab.value = tab
 }
+
+const id = route.params.id
 </script>
 
 <template>
@@ -30,7 +32,7 @@ const changeTab = (tab: Tabs) => {
       <div class="w-full justify-end flex pt-2">
         <button
           class="bg-white px-2 py-1 rounded-md hover:bg-slate-400 text-black duration-300"
-          @click="joinEvent(route.params.id)"
+          @click="typeof id === 'string' ? joinEvent(id) : ''"
         >
           Join Event
         </button>
