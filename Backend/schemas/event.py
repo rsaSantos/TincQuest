@@ -9,6 +9,17 @@ from . import question as question_schema
 class EventBase(BaseModel):
     name: str
 
+class EventBasic(BaseModel):
+    id: int
+    max_registrations: int
+    number_registrations: int
+    inicial_date: datetime
+    final_date: datetime
+    prize: prize_schema.Prize
+
+    class Config:
+        orm_mode = True
+
 class EventCreate(EventBase):
     description: str
     private: bool
