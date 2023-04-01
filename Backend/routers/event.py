@@ -50,7 +50,7 @@ def terminate_event(event_id : int, current_user: Annotated[user_schema.User, De
     contract_address = event_crud.get_event(db, event_id).event_address
 
     # Terminate the event in the blockchain
-    if(web3_event.terminate_event( ABI, contract_address , event_id)):
+    if(web3_event.terminate_event( db, ABI, contract_address , event_id)):
         # TODO: 
         # 1. Alterar o estado do evento para terminado
         return True

@@ -5,9 +5,6 @@ from ..models import participant as participant_model
 from ..models import event as event_model
 from ..cruds import prize as prize_crud
 from ..cruds import question as question_crud
-from fastapi import Depends
-from Backend.dependencies import get_db
-
 
 def create_event_from_event_create(db: Session, event: event_schema.EventCreate, owner_id: int) -> event_model.Event:
     prize = prize_crud.create_prize(db, event.prize)
@@ -51,7 +48,3 @@ def get_events(db: Session, user_id : int):
     event_list.extend(get_my_events(db, user_id))
     event_list.extend(get_owned_events(db, user_id))
     return list(set(event_list))
-
-# Get the n first participants of an event
-def get_winners(event_id: int, n: int, db: Session = Depends(get_db)):
-    return [] # TODO:
