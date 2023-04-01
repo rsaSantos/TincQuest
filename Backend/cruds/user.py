@@ -5,7 +5,7 @@ from ..schemas import user as user_schema
 from ..models import user as user_model
 
 def create_user_from_user_create(user: user_schema.UserCreate) -> user_model.User:
-    return user.User(
+    return user_model.User(
         username=user.username,
         password=user.password,
         name=user.name,
