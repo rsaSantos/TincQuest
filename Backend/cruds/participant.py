@@ -15,3 +15,7 @@ def create_question(db: Session,participant: participant_schema.ParticipantBase)
     db.commit()
     db.refresh(db_participant)
     return db_participant
+
+def get_participant_winner(db: Session, event_id: int, n: int):
+    all_winner = db.query(participant_model.Participant).filter(participant_model.Participant.event_id == event_id).order_by(participant_model.Participant.score.desc()).all()
+    return all_winner[:n]

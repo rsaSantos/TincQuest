@@ -17,3 +17,11 @@ class ParticipantRead(ParticipantBase):
 
     class Config:
         orm_mode = True
+
+class ParticipantWinner(ParticipantBase):
+    score : int
+    awsered_questions: str
+    wallet_address: str
+
+    class Config:
+        orm_mode = True

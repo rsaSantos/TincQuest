@@ -44,8 +44,6 @@ def terminate_event(event_id : int, current_user: Annotated[user_schema.User, De
     if(web3_event.terminate_event( ABI, contract_address , event_id)):
         # TODO: 
         # 1. Alterar o estado do evento para terminado
-        # 2. Retirar o id de participante da lista de ids do user (...)
-        #
         return True
     else:
         return False
