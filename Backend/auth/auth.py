@@ -7,7 +7,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from sqlalchemy.orm import Session
-from Backend.database import crud
+from ..cruds import user as user_crud
 
 from Backend.dependencies import get_db
 
@@ -30,7 +30,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def authenticate_user(username: str, password: str, db: Session = Depends(get_db)):
     print(username, password)
-    user = crud.get_user_by_username(db, username=username)
+    user = user_crud.get_user_by_username(db, username=username)
     if not user:
         return False
     if not verify_password(password, user.password):
@@ -69,7 +69,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Se
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = crud.get_user_by_username(db, username=token_data.username)
+    user = user_crud.get_user_by_username(db, username=token_data.username)
     if user is None:
         raise credentials_exception
     return user
