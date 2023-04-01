@@ -22,45 +22,46 @@ const id = route.params.id
 </script>
 
 <template>
-  <div class="mx-10">
-    <div class="bg-slate-600 text-white rounded-lg p-4 relative mt-16 min-h-40">
-      <img src="@/assets/Images/defaultEventImage.jpg" class="rounded-full w-32 absolute -top-7" />
-      <div class="pl-36 space-y-2">
-        <div class="text-2xl font-bold">Workshop Test</div>
-        <EventLeaderBoard />
+  <div class="px-5 flex space-x-5 w-full">
+    <div class="bg-slate-600 text-white rounded-lg w-[15%] h-[91vh]">
+      <div class="space-y-2">
+        <div class="text-2xl font-bold pt-5 text-center">Workshop Test</div>
+        <div class="w-full justify-center flex">
+          <button
+            class="bg-white px-2 py-1 my-2 rounded-md hover:bg-slate-400 text-black duration-300"
+            @click="typeof id === 'string' ? joinEvent(id) : ''"
+          >
+            Join Event
+          </button>
+        </div>
       </div>
-      <div class="w-full justify-end flex pt-2">
+      <EventLeaderBoard class="w-full mt-2" />
+    </div>
+    <div class="w-[85%]">
+      <div class="pt-5 flex justify-center space-x-4 text-lg text-slate-600">
         <button
-          class="bg-white px-2 py-1 rounded-md hover:bg-slate-400 text-black duration-300"
-          @click="typeof id === 'string' ? joinEvent(id) : ''"
+          @click="changeTab(Tabs.info)"
+          :class="openTab === Tabs.info ? 'text-black font-semibold border-b-2 border-black' : ''"
         >
-          Join Event
+          Info
+        </button>
+
+        <button
+          @click="changeTab(Tabs.questions)"
+          :class="
+            openTab === Tabs.questions
+              ? 'text-black font-semibold border-b-2 border-black'
+              : ' hover:font-semibold'
+          "
+        >
+          Questions
         </button>
       </div>
-    </div>
-    <div class="pt-5 flex justify-center w-full space-x-4 text-lg text-slate-600">
-      <button
-        @click="changeTab(Tabs.info)"
-        :class="openTab === Tabs.info ? 'text-black font-semibold border-b-2 border-black' : ''"
-      >
-        Info
-      </button>
-
-      <button
-        @click="changeTab(Tabs.questions)"
-        :class="
-          openTab === Tabs.questions
-            ? 'text-black font-semibold border-b-2 border-black'
-            : ' hover:font-semibold'
-        "
-      >
-        Questions
-      </button>
-    </div>
-    <hr class="pb-5" />
-    <div class="pb-5">
-      <EventInfo v-if="openTab === Tabs.info" />
-      <EventQuestions v-if="openTab === Tabs.questions" />
+      <hr class="pb-5" />
+      <div class="pb-5">
+        <EventInfo v-if="openTab === Tabs.info" />
+        <EventQuestions v-if="openTab === Tabs.questions" />
+      </div>
     </div>
   </div>
 </template>

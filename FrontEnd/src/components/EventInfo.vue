@@ -1,6 +1,6 @@
 <script setup lang="ts"></script>
 <template>
-  <div class="shadow-2xl w-full space-x-20 rounded-md p-4 flex">
+  <div class="shadow-2xl space-x-20 rounded-md p-4 flex">
     <div class="space-y-2">
       <div>
         <span class="font-semibold">Prize:</span>
@@ -18,6 +18,7 @@
         <span class="font-semibold">Entry Fee:</span>
         <span> Free</span>
       </div>
+      <div><span class="font-semibold">Owner:</span> <span> Jorge</span></div>
     </div>
     <div class="w-2/3 flex flex-col">
       <span class="font-semibold">Rules</span>

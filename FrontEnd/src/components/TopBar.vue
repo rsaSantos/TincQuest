@@ -68,7 +68,6 @@ const logout = () => {
       <RouterLink to="/login" class="rounded-lg hover:bg-red-300 transition-all duration-300">
         <button class="p-3" @click="logout()">Logout</button></RouterLink
       >
-      <div class="text-semibold text-black text-xl">Username</div>
     </div>
   </div>
 </template>

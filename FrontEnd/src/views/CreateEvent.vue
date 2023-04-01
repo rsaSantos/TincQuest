@@ -1,23 +1,38 @@
 <script setup lang="ts">
+import { createEvent } from '@/api/events'
 import { ref } from 'vue'
 
 const name = ref('')
 const description = ref('')
 const privEvent = ref(false)
 
-const startDate = ref(new Date())
-const endDate = ref(new Date())
+const initial_date = ref()
+const final_date = ref()
 const iLimit = ref(1)
-const entryFee = ref(0)
-const basePrize = ref(0)
-const prizePerInscription = ref(0)
-const prizeDestribution = ref([100])
+const entrance_fee = ref(0)
+const base_prize = ref(0)
+const registration_prize_percentage = ref(0)
+const distribution = ref([100])
 const questions = ref<
   { question: string; answers: string[]; points: number; rightAnswer: string }[]
 >([{ question: '', answers: [], rightAnswer: '', points: 0 }])
 
 const onSubmit = () => {
-  console.log('submit')
+  createEvent({
+    name: name.value,
+    description: description.value,
+    private: privEvent.value,
+    inicial_date: initial_date.value.toLocaleString(),
+    final_date: final_date.value.toLocaleString(),
+    max_registrations: iLimit.value,
+    entrance_fee: entrance_fee.value,
+    prize: {
+      base_prize: base_prize.value,
+      registration_prize_percentage: registration_prize_percentage.value,
+      distribution: distribution.value
+    },
+    number_registrations: 10
+  })
 }
 </script>
 <template>
@@ -39,7 +54,7 @@ const onSubmit = () => {
           </div>
           <div class="flex flex-col">
             <label for="privEvent">Private Event</label>
-            <input required type="checkbox" v-model="privEvent" />
+            <input type="checkbox" v-model="privEvent" />
           </div>
         </div>
         <div>
@@ -72,7 +87,7 @@ const onSubmit = () => {
             <input
               required
               type="datetime-local"
-              v-model="startDate"
+              v-model="initial_date"
               class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
             />
           </div>
@@ -81,7 +96,7 @@ const onSubmit = () => {
             <input
               required
               type="datetime-local"
-              v-model="endDate"
+              v-model="final_date"
               class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
             />
           </div>
@@ -92,7 +107,7 @@ const onSubmit = () => {
               type="number"
               id="entryFee"
               min:0
-              v-model="entryFee"
+              v-model="entrance_fee"
               class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
             />
           </div>
@@ -110,11 +125,9 @@ const onSubmit = () => {
                 type="number"
                 id="basePrize"
                 min:0
-                v-model="basePrize"
+                v-model="base_prize"
                 class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
               />
-
-              <input />
             </div>
             <div class="flex flex-col">
               <label for="name">Prize Per Inscription</label>
@@ -122,7 +135,7 @@ const onSubmit = () => {
                 required
                 type="number"
                 min:0
-                v-model="prizePerInscription"
+                v-model="registration_prize_percentage"
                 class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
               />
             </div>
@@ -132,16 +145,16 @@ const onSubmit = () => {
 
             <input
               required
-              v-for="(item, i) in prizeDestribution"
+              v-for="(item, i) in distribution"
               :key="i"
-              v-model="prizeDestribution[i]"
+              v-model="distribution[i]"
               type="number"
               class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
             />
             <div class="flex justify-center">
               <button
                 type="button"
-                @click="prizeDestribution.push(0)"
+                @click="distribution.push(0)"
                 class="bg-slate-400 rounded-full font-bold w-10 text-2xl ml-10"
               >
                 +
