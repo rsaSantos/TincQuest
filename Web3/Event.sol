@@ -28,29 +28,40 @@ contract Event {
     // Percentage of the entry fee that goes to the prize pool
     uint256 public enrollToPrizePoolPercentage;
 
+    // Share of the prize pool for each winner
+    uint256[] public prizeShare;
+
+    // TincQuest address: used to terminate the event,
+    address public tinqQuest;
+
     // Values in the constructor are in wei!
     constructor(
+        address _tinqQuest,
         uint256 _entryFee,
         uint256 _minimumPrizePool,
-        uint256 _enrollToPrizePoolPercentage
+        uint256 _enrollToPrizePoolPercentage,
+        uint256[] memory _prizeShare
     ) payable
     {
         require(msg.value >= _minimumPrizePool, "Minimum prize pool must be funded.");
         require(_entryFee >= 0, "Entry fee must be greater or equal than 0.");
         require(_minimumPrizePool > 0, "Minimum prize pool must be greater than 0.");
         require(_enrollToPrizePoolPercentage >= 0 && _enrollToPrizePoolPercentage <= 100, "Enroll to prize pool percentage must be between 0 and 100.");
-        
+        require(getSum(_prizeShare) == 100, "Sum of prize shares must be 100.");
+
+        tinqQuest = _tinqQuest;
         organizer = payable(msg.sender);
         entryFee = _entryFee;
         minimumPrizePool = _minimumPrizePool;
         enrollToPrizePoolPercentage = _enrollToPrizePoolPercentage;
+        prizeShare = _prizeShare;
         prizePool = msg.value;
     }
 
     // Modifier to check if the organizer is the caller
-    modifier onlyOrganizer() 
+    modifier onlyTincQuest() 
     {
-        require(msg.sender == organizer, "Only organizer can call this function.");
+        require(msg.sender == tinqQuest , "Only TincQuest can call this function.");
         _;
     }
 
@@ -87,13 +98,14 @@ contract Event {
     // Distribute the prize pool to the winner (or winners)
     // Send the remaining funds to the organizer
     function terminate(
-        address payable[] memory winners,
-        uint256[] memory prizeShare
-    ) public onlyOrganizer
+        address payable[] memory winners
+    ) public onlyTincQuest
     {
         require(winners.length == prizeShare.length, "Number of winners and prize shares must be equal.");
         require(winners.length > 0, "At least one winner must be specified.");
-        require(getSum(prizeShare) == 100, "Sum of prize shares must be 100.");
+        for (uint256 i = 0; i < winners.length; i++) {
+            require(isParticipant(winners[i]), "Winner must be a participant.");
+        }
 
         // Distribute the prize pool to the winners
         for (uint256 i = 0; i < winners.length; i++) {
