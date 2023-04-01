@@ -2,6 +2,7 @@ from datetime import datetime
 from pydantic import BaseModel
 
 from . import user as user_schema
+from . import prize as prize_schema
 
 class EventBase(BaseModel):
     name: str
@@ -14,6 +15,7 @@ class EventCreate(EventBase):
     entrance_fee: float
     inicial_date: datetime
     final_date: datetime
+    prize: prize_schema.Prize
 
 
 class EventOwned(EventBase):
@@ -29,6 +31,7 @@ class EventOwned(EventBase):
     event_state: str
     owner_id: int
     owner: user_schema.User
+    prize: prize_schema.Prize
 
     class Config:
         orm_mode = True
