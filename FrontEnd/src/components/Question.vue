@@ -30,7 +30,7 @@ const select = (answer: string) => {
 </script>
 
 <template>
-  <div class="shadow-lg bg-slate-500 rounded-md p-2 text-white">
+  <div class="shadow-lg bg-slate-600 rounded-md p-2 text-white">
     {{ question.question }}
     <hr class="py-2 mt-2" />
 

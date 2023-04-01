@@ -18,6 +18,9 @@ const questions = ref<
 >([{ question: '', answers: [], rightAnswer: '', points: 0 }])
 
 const onSubmit = () => {
+  if (distribution.value.reduce((a, b) => a + b, 0) !== 100)
+    return alert('The distribution must sum 100%')
+
   createEvent({
     name: name.value,
     description: description.value,
@@ -36,7 +39,7 @@ const onSubmit = () => {
 }
 </script>
 <template>
-  <form class="px-6 pt-5" @submit.prevent="onSubmit">
+  <form class="px-5 pt-5" @submit.prevent="onSubmit">
     <div class="space-y-4">
       <div class="shadow-md p-4 rounded-md">
         <span class="text-2xl font-semibold">Details</span>
@@ -49,7 +52,7 @@ const onSubmit = () => {
               id="name"
               v-model="name"
               placeholder="Event Name"
-              class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+              class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
             />
           </div>
           <div class="flex flex-col">
@@ -63,7 +66,7 @@ const onSubmit = () => {
             id="description"
             v-model="description"
             placeholder="Event Description"
-            class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white w-full h-20"
+            class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white w-full h-20"
           ></textarea>
         </div>
       </div>
@@ -79,7 +82,7 @@ const onSubmit = () => {
               id="iLimit"
               min:1
               v-model="iLimit"
-              class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+              class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
             />
           </div>
           <div class="flex flex-col">
@@ -88,7 +91,7 @@ const onSubmit = () => {
               required
               type="datetime-local"
               v-model="initial_date"
-              class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+              class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
             />
           </div>
           <div class="flex flex-col">
@@ -97,7 +100,7 @@ const onSubmit = () => {
               required
               type="datetime-local"
               v-model="final_date"
-              class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+              class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
             />
           </div>
           <div class="flex flex-col">
@@ -108,7 +111,7 @@ const onSubmit = () => {
               id="entryFee"
               min:0
               v-model="entrance_fee"
-              class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+              class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
             />
           </div>
         </div>
@@ -126,7 +129,7 @@ const onSubmit = () => {
                 id="basePrize"
                 min:0
                 v-model="base_prize"
-                class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+                class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
               />
             </div>
             <div class="flex flex-col">
@@ -136,7 +139,7 @@ const onSubmit = () => {
                 type="number"
                 min:0
                 v-model="registration_prize_percentage"
-                class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+                class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
               />
             </div>
           </div>
@@ -149,15 +152,15 @@ const onSubmit = () => {
               :key="i"
               v-model="distribution[i]"
               type="number"
-              class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+              class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
             />
             <div class="flex justify-center">
               <button
                 type="button"
                 @click="distribution.push(0)"
-                class="bg-slate-400 rounded-full font-bold w-10 text-2xl ml-10"
+                class="bg-slate-500 rounded-md hover:bg-slate-600 duration-300 font-semibold p-2 text-white"
               >
-                +
+                New Distribution +
               </button>
             </div>
           </div>
@@ -176,7 +179,7 @@ const onSubmit = () => {
                   v-model="questions[i].question"
                   placeholder="Write your Question"
                   type="text"
-                  class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+                  class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
                 />
               </div>
               <div class="flex flex-col pt-5 items-center">
@@ -187,7 +190,7 @@ const onSubmit = () => {
                     v-model="questions[i].rightAnswer"
                     placeholder="Write the correct answer"
                     type="text"
-                    class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+                    class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
                   />
                 </div>
               </div>
@@ -205,7 +208,7 @@ const onSubmit = () => {
                           v-model="questions[i].answers[j]"
                           placeholder="Write your Answer"
                           type="text"
-                          class="rounded-md placeholder:text-white p-2 bg-slate-400 text-white"
+                          class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
                         />
                       </div>
                     </div>
@@ -214,7 +217,7 @@ const onSubmit = () => {
                     <button
                       type="button"
                       @click="questions[i].answers.push('')"
-                      class="bg-orange-400 rounded-full p-2 text-white hover:bg-orange-700 duration-300"
+                      class="bg-orange-500 rounded-full p-2 text-white hover:bg-orange-700 duration-300"
                     >
                       New Answer Option
                     </button>
@@ -227,9 +230,9 @@ const onSubmit = () => {
               <button
                 type="button"
                 @click="questions.push({ question: '', answers: [], rightAnswer: '', points: 0 })"
-                class="bg-slate-400 rounded-full font-bold w-10 text-2xl ml-10"
+                class="bg-slate-500 rounded-lg font-semibold text-white p-2 hover:bg-slate-600 duration-300"
               >
-                +
+                New Challenge +
               </button>
             </div>
           </div>

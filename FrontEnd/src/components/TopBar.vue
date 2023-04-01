@@ -21,7 +21,7 @@ const logout = () => {
       <div class="text-xl text-black font-semibold">TincQuest</div>
       <RouterLink
         to="/"
-        class="rounded-lg p-3"
+        class="rounded-lg p-3 text-center"
         :class="
           selected === 'events'
             ? 'bg-slate-300  '
@@ -32,7 +32,7 @@ const logout = () => {
       </RouterLink>
       <RouterLink
         to="/myevents"
-        class="rounded-lg p-3"
+        class="rounded-lg p-3 text-center"
         :class="
           selected === 'myevents'
             ? 'bg-slate-300 '
@@ -43,7 +43,7 @@ const logout = () => {
       </RouterLink>
       <RouterLink
         to="/ownedEvents"
-        class="rounded-lg p-3"
+        class="rounded-lg p-3 text-center"
         :class="
           selected === 'ownedevents'
             ? 'bg-slate-300  '
@@ -54,7 +54,7 @@ const logout = () => {
       >
       <RouterLink
         to="/createevent"
-        class="rounded-lg p-3"
+        class="rounded-lg p-3 text-center"
         :class="
           selected === 'createevent'
             ? 'bg-slate-300  '
