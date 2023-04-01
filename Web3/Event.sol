@@ -136,4 +136,10 @@ contract Event {
         return participants.length;
     }
 
+    // Get number of winners
+    function getNumberOfWinners() public view returns (uint256) 
+    {
+        return prizeShare.length;
+    }
+
 }
