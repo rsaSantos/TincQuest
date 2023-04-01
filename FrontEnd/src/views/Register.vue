@@ -10,14 +10,19 @@ const password = ref('')
 const wallet_address = ref('')
 
 const register = () => {
-  authStore.login(username.value, password.value)
+  authStore.register({
+    username: username.value,
+    name: name.value,
+    password: password.value,
+    wallet_address: wallet_address.value
+  })
 }
 </script>
 <template>
   <div class="grid place-content-center items-center w-screen h-full">
     <form
       class="bg-white shadow-xl rounded-lg flex flex-col items-center space-y-4 pb-4 w-72 text-white"
-      @submit.prevent="login"
+      @submit.prevent="register"
     >
       <div class="font-semibold text-xl bg-orange-500 w-full text-center p-2 rounded-t-lg">
         TincQuest
@@ -51,15 +56,15 @@ const register = () => {
         <input
           class="bg-slate-200 rounded-lg mx-2 p-2 text-black"
           type="text"
-          placeholder="address"
-          v-model="address"
+          placeholder="Wallet address"
+          v-model="wallet_address"
         />
       </div>
       <button
         class="bg-orange-500 py-1mx-2 p-2 hover:bg-orange-700 duration-300 px-24 rounded-md"
         type="submit"
       >
-        login
+        register
       </button>
 
       <div class="text-black flex flex-col items-center">

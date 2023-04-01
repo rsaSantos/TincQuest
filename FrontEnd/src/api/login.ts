@@ -1,4 +1,4 @@
-import { Register } from "@/models/registerModel"
+import { Register } from '@/models/registerModel'
 
 export const loginRequest = async (username: string, password: string) => {
   try {
@@ -15,9 +15,9 @@ export const loginRequest = async (username: string, password: string) => {
   }
 }
 
-export const registerRequest = async (register: Register) => {  
+export const registerRequest = async (register: Register) => {
   try {
-    const response = await fetch('http://127.0.0.1:8000/token', {
+    const response = await fetch('http://127.0.0.1:8000/user', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(register)

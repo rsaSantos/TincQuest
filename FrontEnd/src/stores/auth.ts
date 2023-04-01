@@ -1,4 +1,4 @@
-import { loginRequest } from '@/api/login'
+import { loginRequest, registerRequest } from '@/api/login'
 import { Register } from '@/models/registerModel'
 import router from '@/router/router'
 import { defineStore } from 'pinia'
@@ -36,5 +36,5 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('token')
   }
 
-  return { isAuthenticated, token, user, login, logout }
+  return { isAuthenticated, token, user, login, logout, register }
 })
