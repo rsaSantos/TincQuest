@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from .routers.user import user_router
+from .routers.event import event_router
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -16,3 +17,4 @@ tincQuest.add_middleware(
 
 
 tincQuest.include_router(user_router.router)
+tincQuest.include_router(event_router.router)
