@@ -4,7 +4,7 @@ import TopBar from './components/TopBar.vue'
 </script>
 
 <template>
-  <div class="bg-black h-screen w-screen">
+  <div class="bg-white pt-2 h-screen w-screen">
     <TopBar />
     <RouterView />
   </div>
