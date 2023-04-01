@@ -9,7 +9,7 @@ from . import question as question_schema
 class EventBase(BaseModel):
     name: str
 
-class EventBasic(BaseModel):
+class EventBasic(EventBase):
     id: int
     max_registrations: int
     number_registrations: int
@@ -33,7 +33,6 @@ class EventCreate(EventBase):
     prize: prize_schema.Prize
     questions: list[question_schema.QuestionCreate]
 
-
 class EventDetail(EventBase):
     id: int
     description: str
@@ -45,11 +44,11 @@ class EventDetail(EventBase):
     final_date: datetime
     event_address: str
     event_state: str
-    owner_id: int
+    
     owner: user_schema.User
     prize: prize_schema.Prize
-    abi:str
     participants: list[participant_schema.Participant]
+    questions: list[question_schema.Question]
 
     class Config:
         orm_mode = True
