@@ -3,6 +3,9 @@ from sqlalchemy.orm import Session
 from ..schemas import event as event_schema
 from ..models import event as event_model
 from ..cruds import prize as prize_crud
+from fastapi import Depends
+from Backend.dependencies import get_db
+
 
 def create_event_from_event_create(event: event_schema.EventCreate, owner_id: int) -> event_model.Event:
     prize = prize_crud.create_prize_from_prize_create(event.prize)
@@ -36,3 +39,7 @@ def create_event(db: Session, event: event_schema.EventCreate, owner_id: int):
     db.commit()
     db.refresh(db_event)
     return get_event(db, db_event.id)
+
+# Get the n first participants of an event
+def get_winners(event_id: int, n: int, db: Session = Depends(get_db)):
+    return [] # TODO:
