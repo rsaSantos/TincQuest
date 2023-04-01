@@ -14,7 +14,7 @@ def create_event_from_event_create(db: Session, event: event_schema.EventCreate,
         description=event.description,
         private=event.private,
         max_registrations=event.max_registrations,
-        number_registrations=event.number_registrations,
+        number_registrations=0,
         entrance_fee=event.entrance_fee,
         inicial_date=event.inicial_date,
         final_date=event.final_date,
@@ -38,7 +38,6 @@ def create_event(db: Session, event: event_schema.EventCreate, owner_id: int):
     db.add(db_event)
     db.commit()
     db.refresh(db_event)
-    return get_event(db, db_event.id)
 
 def get_my_events(db: Session, user_id: int):
     return db.query(event_model.Event).join(participant_model.Participant).filter(participant_model.Participant.user_id == user_id).all()

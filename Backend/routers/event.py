@@ -52,9 +52,9 @@ def get_event(event_id : int, current_user: Annotated[user_schema.User, Depends(
         return event
     raise HTTPException(status_code=400, detail="user is not part of event")
     
-@event_router.post("/event", response_model=event_schema.EventOwned)
+@event_router.post("/event")
 def create_event(event: event_schema.EventCreate, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
-    return correct(event_crud.create_event(db, event, current_user.id))
+    event_crud.create_event(db, event, current_user.id)
 
 @event_router.post("/event/terminate/{event_id}", response_model=bool)
 def terminate_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
