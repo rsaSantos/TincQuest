@@ -1,3 +1,20 @@
+<script lang="ts" setup>
+import { useAuthStore } from '@/stores/auth'
+import { computed } from 'vue'
+import { RouterLink } from 'vue-router'
+import { useRoute } from 'vue-router'
+
+const authStore = useAuthStore()
+const selected = computed(() => {
+  const route = useRoute()
+  return route.name
+})
+
+const logout = () => {
+  authStore.logout()
+}
+</script>
+
 <template>
   <div class="w-full text-slate-600 flex justify-between px-5">
     <div class="flex items-center space-x-4">
@@ -14,7 +31,7 @@
         Events
       </RouterLink>
       <RouterLink
-        to="myevents"
+        to="/myevents"
         class="rounded-lg p-3"
         :class="
           selected === 'myevents'
@@ -55,18 +72,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { computed } from 'vue'
-import { RouterLink } from 'vue-router'
-import { useRoute } from 'vue-router'
-
-const selected = computed(() => {
-  const route = useRoute()
-  return route.name
-})
-
-const logout = () => {
-  console.log('logout')
-}
-</script>

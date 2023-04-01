@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import EventsList from '@/components/EventsList.vue'
+</script>
 
 <template>
-  <div>myEvents</div>
+  <EventsList />
 </template>

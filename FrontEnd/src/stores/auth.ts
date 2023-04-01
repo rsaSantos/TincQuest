@@ -2,16 +2,23 @@ import { loginRequest, registerRequest } from '@/api/login'
 import { Register } from '@/models/registerModel'
 import router from '@/router/router'
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 export const useAuthStore = defineStore('auth', () => {
-  const isAuthenticated = ref(false)
   const token = ref('')
   const user = ref({})
 
+  const isAuthenticated = computed(() => {
+    if (token.value) return true
+    return false
+  })
+
+  const savedToken = localStorage.getItem('token')
+  if (savedToken) {
+    token.value = savedToken
+  }
   const login = async (username: string, password: string) => {
     try {
-      isAuthenticated.value = true
       const response = await loginRequest(username, password)
       token.value = response
       localStorage.setItem('token', response)
@@ -20,6 +27,7 @@ export const useAuthStore = defineStore('auth', () => {
       console.log(error)
     }
   }
+  console.log('auth')
 
   const register = async (register: Register) => {
     try {
@@ -31,7 +39,6 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const logout = () => {
-    isAuthenticated.value = false
     token.value = ''
     localStorage.removeItem('token')
   }

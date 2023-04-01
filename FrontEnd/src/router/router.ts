@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/stores/auth'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -41,6 +42,16 @@ const router = createRouter({
   ]
 })
 
-export default router
-
 export const UNPROTECTED_ROUTES = ['login', 'register']
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+  const routeName = to.name?.toString()
+  if (!authStore.isAuthenticated && routeName && !UNPROTECTED_ROUTES.includes(routeName))
+    next('/login')
+  else if (authStore.isAuthenticated && routeName && UNPROTECTED_ROUTES.includes(routeName))
+    next('/')
+  else next()
+})
+
+export default router
