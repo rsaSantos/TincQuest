@@ -25,7 +25,6 @@ def create_event_from_event_create(db: Session, event: event_schema.EventCreate,
         owner_id=owner_id,
         prize=prize,
         prize_id=prize.id,
-        abi=event.abi,
         questions=questions
     )
 
