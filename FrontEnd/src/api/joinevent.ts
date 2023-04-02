@@ -53,7 +53,10 @@ export const joinEventBackend = async (event_id: number) => {
     })
     if (response.status === 200) {
       const jsonResponse = await response.json()
+
       return jsonResponse
+    } else {
+      alert('Somethin went wrong joining Event')
     }
   } catch (error) {
     alert('Somethin went wrong joining Event')
@@ -67,6 +70,7 @@ export const joinEvent = async (event_id) => {
     const backendResponse = await joinEventBackend(event_id)
     if (backendResponse) {
       alert('Event joined successfully')
+
       return backendResponse
     } else {
       alert('Somethin went wrong joining Event')

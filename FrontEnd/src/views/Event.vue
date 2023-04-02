@@ -41,6 +41,22 @@ const isParticipant = () => {
 const submitJoinEvent = async () => {
   if (typeof id === 'string') {
     const new_event = await joinEvent(parseInt(id))
+    console.log(new_event)
+    if (new_event) event.value = new_event
+    console.log(event.value)
+  }
+}
+
+const submitOpenEvent = async () => {
+  if (typeof id === 'string') {
+    const new_event = await openEvent(parseInt(id))
+    if (new_event) event.value = new_event
+  }
+}
+
+const submitCloseEvent = async () => {
+  if (typeof id === 'string') {
+    const new_event = await closeEvent(parseInt(id))
     if (new_event) event.value = new_event
   }
 }
@@ -80,7 +96,7 @@ const refreshLeaderboard = setInterval(async () => {
               authStore.userInfo.id === event.owner.id
             "
             class="bg-white px-2 py-1 my-2 rounded-md hover:bg-slate-400 text-black duration-300"
-            @click="typeof id === 'string' ? openEvent(parseInt(id)) : ''"
+            @click="typeof id === 'string' ? submitOpenEvent() : ''"
           >
             Open Event
           </button>
@@ -92,7 +108,7 @@ const refreshLeaderboard = setInterval(async () => {
               authStore.userInfo.id === event.owner.id
             "
             class="bg-white px-2 py-1 my-2 rounded-md hover:bg-slate-400 text-black duration-300"
-            @click="typeof id === 'string' ? closeEvent(parseInt(id)) : ''"
+            @click="typeof id === 'string' ? submitCloseEvent() : ''"
           >
             Close Event
           </button>

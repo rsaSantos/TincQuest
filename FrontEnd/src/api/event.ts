@@ -58,6 +58,8 @@ export const openEvent = async (eventId: number) => {
     })
     if (response.status === 200) {
       alert('Event opened successfully')
+      const jsonResponse = await response.json()
+      return jsonResponse
     } else {
       alert('Error opening event')
     }
@@ -78,6 +80,8 @@ export const closeEvent = async (eventId: number) => {
     })
     if (response.status === 200) {
       alert('Event closed successfully')
+      const jsonResponse = await response.json()
+      return jsonResponse
     } else {
       alert('Error closing event')
     }
