@@ -11,12 +11,12 @@ defineProps<Props>()
     <div class="space-y-2">
       <div>
         <span class="font-semibold">Prize: </span>
-        <span> {{ event.prize.base_prize }}</span>
+        <span> {{ event.prize.base_prize }} eth</span>
       </div>
-      <div>
+      <div class="flex flex-col">
         <span class="font-semibold">Destribution: </span>
         <span v-for="(item, i) in event.prize.distribution" :key="i">
-          {{ i + 1 }} - {{ item }}%</span
+          {{ i + 1 }}º - {{ item }}%</span
         >
       </div>
       <div>
@@ -29,7 +29,7 @@ defineProps<Props>()
       </div>
       <div>
         <span class="font-semibold">Entry Fee: </span>
-        <span> {{ event.entrance_fee }}</span>
+        <span> {{ event.entrance_fee }} eth</span>
       </div>
       <div>
         <span class="font-semibold">Owner:</span> <span> {{ event.owner.username }}</span>
