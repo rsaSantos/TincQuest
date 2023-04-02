@@ -10,7 +10,7 @@ declare global {
 
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'))
 
-export const joinEvent = async (eventId: string) => {
+export const joinEvent = async (eventId: number) => {
   console.log('Joining event', eventId)
   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
 

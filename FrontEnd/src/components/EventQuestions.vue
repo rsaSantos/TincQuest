@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Question from './Question.vue'
+import { submitQuestions } from '@/api/questions'
+import { GetEvent } from '@/models/eventModel'
+import { useAuthStore } from '@/stores/auth'
 
-const responses = ref<{ id: string; answer: string }[]>([])
+interface Props {
+  event: GetEvent
+}
+const props = defineProps<Props>()
 
-const addAnswer = (info: { id: string; answer: string }) => {
+const authStore = useAuthStore()
+
+const responses = ref<{ id: number; answer: string }[]>([])
+
+const addAnswer = (info: { id: number; answer: string }) => {
   if (info.answer === '') {
     responses.value = responses.value.filter((r) => r.id === info.id)
-    console.log('here ---', responses.value)
     return
   }
   for (const response of responses.value) {
@@ -20,33 +29,37 @@ const addAnswer = (info: { id: string; answer: string }) => {
   responses.value.push(info)
 }
 
-const submitResponses = () => {
-  //TODO: filter responsed answers
-  console.log(responses)
+const submitResponses = async () => {
+  await submitQuestions(responses.value, props.event.id)
+}
+
+const isParticipant = () => {
+  if (!authStore.userInfo) return false
+  for (const participant of props.event.participants) {
+    if (participant.user.id === authStore.userInfo.id) return true
+  }
+  return false
 }
 </script>
 
 <template>
-  <button
-    class="px-4 py-2 rounded-md bg-orange-500 text-white duration-300 mb-2 hover:bg-orange-600"
-    @click="submitResponses"
-  >
-    Submit
-  </button>
+  <div v-if="event.event_state === 'NEW'">event has not yet started</div>
+  <div v-else-if="!isParticipant()">You are not participating in this event</div>
+  <div v-else-if="event.questions.length > 0">
+    <button
+      class="px-4 py-2 rounded-md bg-orange-500 text-white duration-300 mb-2 hover:bg-orange-600"
+      @click="submitResponses"
+    >
+      Submit
+    </button>
 
-  <div class="grid grid-cols-3 gap-2">
-    <Question
-      @answer="(info) => addAnswer(info)"
-      :question="{
-        question: ` Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-    Corporis dolore reprehenderit exercitationem odio? Molestias deserunt harum nam aliquam
-    perspiciatis impedit, nesciunt expedita quae maiores voluptatem adipisci sunt necessitatibus et
-    laboriosam?`,
-        id: i.toString(),
-        answers: ['asdasd', 'asdasd', 'asdasd', 'asdasd ']
-      }"
-      v-for="i in 10"
-      :key="i"
-    />
+    <div class="grid grid-cols-3 gap-2">
+      <Question
+        v-for="(q, i) in event.questions"
+        @answer="(info) => addAnswer(info)"
+        :question="q"
+        :key="i"
+      />
+    </div>
   </div>
 </template>

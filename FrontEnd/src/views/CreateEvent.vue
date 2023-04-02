@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createEvent } from '@/api/events'
+import { createEvent } from '@/api/event'
 import { ref } from 'vue'
 import { createContract } from '@/api/events'
 
@@ -14,43 +14,44 @@ const entrance_fee = ref(0)
 const base_prize = ref(0)
 const registration_prize_percentage = ref(0)
 const distribution = ref([100])
-const questions = ref<
-  { question: string; answers: string[]; points: number; rightAnswer: string }[]
->([{ question: '', answers: [], rightAnswer: '', points: 0 }])
+const questions = ref<{ question: string; options: string[]; score: number; answer: string }[]>([
+  { question: '', options: [], answer: '', score: 0 }
+])
 
-const onSubmit = async () =>  {
+const onSubmit = async () => {
   if (distribution.value.reduce((a, b) => a + b, 0) !== 100)
     return alert('The distribution must sum 100%')
 
-const eventAddress = await createContract(
-  entrance_fee.value,
-  base_prize.value,
-  registration_prize_percentage.value,
-  distribution.value,
-)
+  /*   const eventAddress = await createContract(
+    entrance_fee.value,
+    base_prize.value,
+    registration_prize_percentage.value,
+    distribution.value
+  )
 
-if (!eventAddress) {
-  alert('Error creating the contract')
-  return
-}
+  if (!eventAddress) {
+    alert('Error creating the contract')
+    return
+  }*/
 
-console.log(eventAddress)
-
-//await createEvent({
-//    name: name.value,
-//    description: description.value,
-//    private: privEvent.value,
-//    inicial_date: initial_date.value.toLocaleString(),
-//    final_date: final_date.value.toLocaleString(),
-//    max_registrations: iLimit.value,
-//    entrance_fee: entrance_fee.value,
-//    prize: {
-//      base_prize: base_prize.value,
-//      registration_prize_percentage: registration_prize_percentage.value,
-//      distribution: distribution.value
-//    },
-//    number_registrations: 10
-//  })
+  await createEvent({
+    name: name.value,
+    description: description.value,
+    private: privEvent.value,
+    inicial_date: initial_date.value.toLocaleString(),
+    final_date: final_date.value.toLocaleString(),
+    max_registrations: iLimit.value,
+    entrance_fee: entrance_fee.value,
+    event_address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    abi: 'dsfsdfgfd',
+    prize: {
+      base_prize: base_prize.value,
+      registration_prize_percentage: registration_prize_percentage.value,
+      distribution: distribution.value
+    },
+    number_registrations: 10,
+    questions: questions.value
+  })
 }
 </script>
 <template>
@@ -202,7 +203,7 @@ console.log(eventAddress)
                 <div>
                   <input
                     :key="i"
-                    v-model="questions[i].rightAnswer"
+                    v-model="questions[i].answer"
                     placeholder="Write the correct answer"
                     type="text"
                     class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
@@ -213,14 +214,14 @@ console.log(eventAddress)
               <div>
                 <span>Answer Options</span>
                 <div class="flex flex-col pt-5 space-y-2">
-                  <div v-for="(item, j) in questions[i].answers" :key="j">
+                  <div v-for="(item, j) in questions[i].options" :key="j">
                     <div class="flex flex-col">
                       <label for="question">Answer {{ j }}</label>
                       <div>
                         <input
                           required
                           :key="j"
-                          v-model="questions[i].answers[j]"
+                          v-model="questions[i].options[j]"
                           placeholder="Write your Answer"
                           type="text"
                           class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
@@ -231,7 +232,7 @@ console.log(eventAddress)
                   <div class="flex justify-start">
                     <button
                       type="button"
-                      @click="questions[i].answers.push('')"
+                      @click="questions[i].options.push('')"
                       class="bg-orange-500 rounded-full p-2 text-white hover:bg-orange-700 duration-300"
                     >
                       New Answer Option
@@ -244,7 +245,7 @@ console.log(eventAddress)
             <div class="flex justify-center">
               <button
                 type="button"
-                @click="questions.push({ question: '', answers: [], rightAnswer: '', points: 0 })"
+                @click="questions.push({ question: '', options: [], answer: '', score: 0 })"
                 class="bg-slate-500 rounded-lg font-semibold text-white p-2 hover:bg-slate-600 duration-300"
               >
                 New Challenge +

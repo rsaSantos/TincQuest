@@ -6,11 +6,11 @@ import { computed, ref } from 'vue'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref('')
-  const userInfo = computed(async () => {
-    const info = await getUserInfo(token.value)
-    console.log(info)
-    return info
-  })
+  const userInfo = ref<{
+    username: string
+    name: string
+    id: number
+  }>()
   const isAuthenticated = computed(() => {
     if (token.value) return true
     return false
@@ -19,13 +19,16 @@ export const useAuthStore = defineStore('auth', () => {
   const savedToken = localStorage.getItem('token')
   if (savedToken) {
     token.value = savedToken
+    getUserInfo(token.value).then((response) => {
+      userInfo.value = response
+    })
   }
   const login = async (username: string, password: string) => {
     try {
       const response = await loginRequest(username, password)
       token.value = response
       localStorage.setItem('token', response)
-
+      userInfo.value = await getUserInfo(token.value)
       router.push('/')
     } catch (error) {
       console.log(error)

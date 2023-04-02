@@ -3,8 +3,10 @@ import { ref } from 'vue'
 
 interface Question {
   question: string
-  id: string
-  answers?: string[]
+  id: number
+  options: string[]
+  answer: string
+  score: number
 }
 
 interface Props {
@@ -12,7 +14,7 @@ interface Props {
 }
 
 interface Emits {
-  (e: 'answer', value: { id: string; answer: string }): void
+  (e: 'answer', value: { id: number; answer: string }): void
 }
 
 const props = defineProps<Props>()
@@ -34,8 +36,8 @@ const select = (answer: string) => {
     {{ question.question }}
     <hr class="py-2 mt-2" />
 
-    <div v-if="question.answers" class="grid grid-cols-2 place-items-center">
-      <div v-for="answer in question.answers" :key="answer" class="space-x-2 flex items-center">
+    <div v-if="question.options.length > 0" class="grid grid-cols-2 place-items-center">
+      <div v-for="answer in question.options" :key="answer" class="space-x-2 flex items-center">
         <button class="w-3 bg-white h-3 flex justify-center items-center" @click="select(answer)">
           <div v-if="answer === selected" class="bg-orange-400 w-[75%] h-[80%]"></div>
         </button>
