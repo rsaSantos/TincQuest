@@ -9,7 +9,7 @@ declare global {
 
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'))
 
-export const joinEventContract = async (event_address, entrance_fee : number) => {
+export const joinEventContract = async (event_address, entrance_fee: number) => {
   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
 
   if (!accounts) {
@@ -18,7 +18,6 @@ export const joinEventContract = async (event_address, entrance_fee : number) =>
 
   // Get address of first account
   const account = accounts[0]
-  console.log('Account', account)
 
   // Read ABI from file
   const response = await fetch('http://localhost:8000/web3/abi/')
@@ -62,7 +61,7 @@ export const joinEventBackend = async (event_id: number) => {
 
 export const joinEvent = async (event_id, event_address, entrance_fee) => {
   try {
-    const contractResponse = await joinEventContract(event_address, entrance_fee)
+    //const contractResponse = await joinEventContract(event_address, entrance_fee)
 
     const backendResponse = await joinEventBackend(event_id)
     if (backendResponse) {

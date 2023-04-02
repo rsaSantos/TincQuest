@@ -34,6 +34,9 @@ defineProps<Props>()
       <span>
         {{ event.description }}
       </span>
+      <span class="font-semibold pt-2">etherscan</span>
+
+      <a href="https://etherscan.io/address/{{ event.event_address }}">{{ event.event_address }}</a>
     </div>
   </div>
 </template>
