@@ -1,3 +1,4 @@
+import json
 from sqlalchemy.orm import Session
 
 from ..schemas import event as event_schema
@@ -90,19 +91,20 @@ def close_event(db: Session, event_id: int, user_id: int):
     db.refresh(event)
     return True
 
-def answer_quiz(db: Session, event_id: int, user_id: int, question_id: int, awnser: str):
+def answer_quiz(db: Session, event_id: int, user_id: int, awnser: list):
     event = get_event(db, event_id)
     if event.event_state != event_model.EventState.OPEN:
         return False
     participant = db.query(participant_model.Participant).filter(participant_model.Participant.event_id == event_id, participant_model.Participant.user_id == user_id).first()
     if participant is None:
         return False
-    question = db.query(question_crud.question_model.Question).filter(question_crud.question_model.Question.id == question_id).first()
-    if question is None:
-        return False
-    if question.answer == awnser:
-        participant.score += 1
-    participant.answered_questions = participant.answered_questions + f",{question_id}"
+    for dict in awnser:
+        question = db.query(question_crud.question_model.Question).filter(question_crud.question_model.Question.id == dict["id"]).first()
+        if question is None:
+            return False
+        if question.answer == dict["awnser"]:
+            participant.score += question.score
+        participant.answered_questions = str(json.load(participant.answered_questions).append(dict["id"]))
     db.commit()
     db.refresh(participant)
     return True

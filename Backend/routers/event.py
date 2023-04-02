@@ -88,5 +88,5 @@ def terminate_event(event_id : int, current_user: Annotated[user_schema.User, De
             raise HTTPException(status_code=400, detail="user can´t close event")
         
 @event_router.put("/answer_quiz/{event_id}")
-def answer_quiz(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
-    pass
+def answer_quiz(event_id : int, answer: list, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
+    event_crud.answer_quiz(db, event_id, current_user.id, answer)
