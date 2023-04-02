@@ -54,7 +54,7 @@ def join_event(db : Session, event_id : int, user_id : int):
     if (user_id in [k.user_id for k in event.participants] 
     or event.number_registrations >= event.max_registrations 
     or event.owner_id == user_id
-    or event.event_state != event_model.EventState.OPEN):
+    or event.event_state == event_model.EventState.CLOSED):
         return False
     event.number_registrations += 1
     participant = participant_model.Participant(
