@@ -4,6 +4,7 @@ from typing import Annotated
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from Backend.auth.auth import get_current_user
+from Backend.routers.web3 import get_abi
 from ..schemas import event as event_schema
 from ..schemas import user as user_schema
 from ..schemas import participant as participant_schema
@@ -87,7 +88,7 @@ def open_event(event_id : int, current_user: Annotated[user_schema.User, Depends
 @event_router.put("/event/terminate/{event_id}", response_model=event_schema.EventDetail)
 def terminate_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
     # Get ABI and event contract address
-    ABI = event_crud.get_event(db, event_id).abi
+    ABI = get_abi()
     contract_address = event_crud.get_event(db, event_id).event_address
 
     # Terminate the event in the blockchain

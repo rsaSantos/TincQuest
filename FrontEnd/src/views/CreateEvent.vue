@@ -43,7 +43,7 @@ const onSubmit = async () => {
     final_date: final_date.value.toLocaleString(),
     max_registrations: iLimit.value,
     entrance_fee: entrance_fee.value,
-    event_address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    event_address: eventAddress,
     prize: {
       base_prize: base_prize.value,
       registration_prize_percentage: registration_prize_percentage.value,
