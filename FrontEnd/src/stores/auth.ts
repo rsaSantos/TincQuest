@@ -1,4 +1,4 @@
-import { loginRequest, registerRequest } from '@/api/login'
+import { getUserInfo, loginRequest, registerRequest } from '@/api/login'
 import { Register } from '@/models/registerModel'
 import router from '@/router/router'
 import { defineStore } from 'pinia'
@@ -6,8 +6,11 @@ import { computed, ref } from 'vue'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref('')
-  const user = ref({})
-
+  const userInfo = computed(async () => {
+    const info = await getUserInfo(token.value)
+    console.log(info)
+    return info
+  })
   const isAuthenticated = computed(() => {
     if (token.value) return true
     return false
@@ -22,12 +25,12 @@ export const useAuthStore = defineStore('auth', () => {
       const response = await loginRequest(username, password)
       token.value = response
       localStorage.setItem('token', response)
+
       router.push('/')
     } catch (error) {
       console.log(error)
     }
   }
-  console.log('auth')
 
   const register = async (register: Register) => {
     try {
@@ -43,5 +46,5 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('token')
   }
 
-  return { isAuthenticated, token, user, login, logout, register }
+  return { isAuthenticated, token, userInfo, login, logout, register }
 })

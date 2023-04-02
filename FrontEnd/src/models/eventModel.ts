@@ -1,11 +1,15 @@
 export interface EventSimple {
-  name: string
-  prize: string
-  startDate: string
-  endDate: string
-  participantsLimit: number
-  nParticipants: number
   id: number
+  name: string
+  prize: {
+    base_prize: number
+    registration_prize_percentage: number
+    distribution: number[]
+  }
+  inicial_date: string
+  final_date: string
+  max_registrations: number
+  number_registrations: number
 }
 
 export interface CreateEvent {
