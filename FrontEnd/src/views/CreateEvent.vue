@@ -23,7 +23,7 @@ const onSubmit = async () => {
   if (distribution.value.reduce((a, b) => a + b, 0) !== 100)
     return alert('The distribution must sum 100%')
 
-  /*   const eventAddress = await createContract(
+  const eventAddress = await createContract(
     entrance_fee.value,
     base_prize.value,
     registration_prize_percentage.value,
@@ -33,7 +33,9 @@ const onSubmit = async () => {
   if (!eventAddress) {
     alert('Error creating the contract')
     return
-  }*/
+  }
+
+  console.log(eventAddress)
 
   const response = await createEvent({
     name: name.value,

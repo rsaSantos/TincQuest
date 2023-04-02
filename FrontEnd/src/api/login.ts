@@ -45,7 +45,7 @@ export const getUserInfo = async (token: string) => {
       const data: { username: string; name: string; id: number } = await response.json()
       return data
     } else {
-      alert('Error creating event')
+      alert('Error getting User Info')
     }
   } catch (error) {
     alert('Error getting User Info')
