@@ -47,6 +47,7 @@ def get_events(current_user: Annotated[user_schema.User, Depends(get_current_use
 @event_router.get("/event/{event_id}", response_model=event_schema.EventDetail)
 def get_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
     event = correct(event_crud.get_event(db, event_id))
+    event.participants = [correct_awsered_questions(e) for e in event.participants]
     if event.event_state != event_model.EventState.OPEN:
         event.questions = []
     if event.participants:
