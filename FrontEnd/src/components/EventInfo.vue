@@ -14,6 +14,12 @@ defineProps<Props>()
         <span> {{ event.prize.base_prize }}</span>
       </div>
       <div>
+        <span class="font-semibold">Destribution: </span>
+        <span v-for="(item, i) in event.prize.distribution" :key="i">
+          {{ i + 1 }} - {{ item }}%</span
+        >
+      </div>
+      <div>
         <span class="font-semibold">Start Time: </span>
         <span> {{ event.inicial_date }}</span>
       </div>
