@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from .routers.user import user_router
 from .routers.event import event_router
+from .routers.web3 import web3_router
 from fastapi.middleware.cors import CORSMiddleware
 
 from .database.database import engine 
@@ -32,3 +33,4 @@ question_model.Base.metadata.create_all(bind=engine)
 
 tincQuest.include_router(user_router.router)
 tincQuest.include_router(event_router.router)
+tincQuest.include_router(web3_router.router)
