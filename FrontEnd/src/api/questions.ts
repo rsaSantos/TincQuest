@@ -11,7 +11,8 @@ export const submitQuestions = async (
       headers: {
         'Content-Type': 'application/json',
         authorization: `Bearer ${authStore.token}`
-      }
+      },
+      body: JSON.stringify(questions)
     })
     if (response.status === 200) {
       alert('Question submitted successfully')

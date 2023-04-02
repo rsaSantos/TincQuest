@@ -12,6 +12,7 @@ defineProps<Props>()
 
 <template>
   <div class="px-5 mt-10 w-full pt-2 grid lg:grid-cols-4 sm:grid-cols-2 gap-3 pb-5">
+    
     <RouterLink
       v-for="(event, i) in events"
       :key="i"
