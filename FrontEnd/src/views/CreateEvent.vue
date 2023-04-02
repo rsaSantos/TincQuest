@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { createEvent } from '@/api/events'
 import { ref } from 'vue'
+import { createContract } from '@/api/events'
 
 const name = ref('')
 const description = ref('')
@@ -17,25 +18,39 @@ const questions = ref<
   { question: string; answers: string[]; points: number; rightAnswer: string }[]
 >([{ question: '', answers: [], rightAnswer: '', points: 0 }])
 
-const onSubmit = () => {
+const onSubmit = async () =>  {
   if (distribution.value.reduce((a, b) => a + b, 0) !== 100)
     return alert('The distribution must sum 100%')
 
-  createEvent({
-    name: name.value,
-    description: description.value,
-    private: privEvent.value,
-    inicial_date: initial_date.value.toLocaleString(),
-    final_date: final_date.value.toLocaleString(),
-    max_registrations: iLimit.value,
-    entrance_fee: entrance_fee.value,
-    prize: {
-      base_prize: base_prize.value,
-      registration_prize_percentage: registration_prize_percentage.value,
-      distribution: distribution.value
-    },
-    number_registrations: 10
-  })
+const eventAddress = await createContract(
+  entrance_fee.value,
+  base_prize.value,
+  registration_prize_percentage.value,
+  distribution.value,
+)
+
+if (!eventAddress) {
+  alert('Error creating the contract')
+  return
+}
+
+console.log(eventAddress)
+
+//await createEvent({
+//    name: name.value,
+//    description: description.value,
+//    private: privEvent.value,
+//    inicial_date: initial_date.value.toLocaleString(),
+//    final_date: final_date.value.toLocaleString(),
+//    max_registrations: iLimit.value,
+//    entrance_fee: entrance_fee.value,
+//    prize: {
+//      base_prize: base_prize.value,
+//      registration_prize_percentage: registration_prize_percentage.value,
+//      distribution: distribution.value
+//    },
+//    number_registrations: 10
+//  })
 }
 </script>
 <template>
