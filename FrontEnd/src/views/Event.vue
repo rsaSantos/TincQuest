@@ -56,7 +56,11 @@ const submitOpenEvent = async () => {
 
 const submitCloseEvent = async () => {
   if (typeof id === 'string') {
-    const new_event = await closeEvent(parseInt(id))
+    const new_event = await joinEvent(
+      parseInt(id),
+      event.value?.event_address,
+      event.value?.entrance_fee
+    )
     if (new_event) event.value = new_event
   }
 }
