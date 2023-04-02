@@ -70,12 +70,12 @@ def join_event(event_id : int, current_user: Annotated[user_schema.User, Depends
 def get_leaderboard(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
     return [correct_awsered_questions(e) for e in event_crud.get_event_participants(db, event_id)]
 
-@event_router.get("/openEvent/{event_id}")
+@event_router.put("/openEvent/{event_id}")
 def open_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
     if not event_crud.open_event(db, event_id, current_user.id):
         raise HTTPException(status_code=400, detail="user can´t open event")
 
-@event_router.post("/event/terminate/{event_id}", response_model=bool)
+@event_router.put("/event/terminate/{event_id}", response_model=bool)
 def terminate_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
     # Get ABI and event contract address
     ABI = event_crud.get_event(db, event_id).abi
