@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 
-const CONTRACT_ADDRESS = '0x2faF2A8f2F522c5728332d635F283059AFa006a7' // Replace with actual contract address
+const CONTRACT_ADDRESS = '0x2faF2A8f2F522c5728332d635F283059AFa006a7' // TODO: REMOVE
 
 declare global {
   interface Window {
@@ -23,12 +23,9 @@ export const joinEvent = async (eventId: string) => {
   console.log('Account', account)
 
   // Read ABI from file
-  const ABI = JSON.parse(
-    '[{"inputs": [{"internalType": "address", "name": "_tinqQuest", "type": "address"}, {"internalType": "uint256", "name": "_entryFee", "type": "uint256"}, {"internalType": "uint256", "name": "_minimumPrizePool", "type": "uint256"}, {"internalType": "uint256", "name": "_enrollToPrizePoolPercentage", "type": "uint256"}, {"internalType": "uint256[]", "name": "_prizeShare", "type": "uint256[]"}], "stateMutability": "payable", "type": "constructor"}, {"inputs": [], "name": "enroll", "outputs": [], "stateMutability": "payable", "type": "function"}, {"inputs": [], "name": "enrollToPrizePoolPercentage", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "entryFee", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "getNumberOfParticipants", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "address", "name": "addr", "type": "address"}], "name": "isParticipant", "outputs": [{"internalType": "bool", "name": "", "type": "bool"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "minimumPrizePool", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "organizer", "outputs": [{"internalType": "address payable", "name": "", "type": "address"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "name": "participants", "outputs": [{"internalType": "address", "name": "", "type": "address"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "prizePool", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "name": "prizeShare", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "address payable[]", "name": "winners", "type": "address[]"}], "name": "terminate", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [], "name": "tinqQuest", "outputs": [{"internalType": "address", "name": "", "type": "address"}], "stateMutability": "view", "type": "function"}]'
-  )
-
-  console.log('ABI', ABI)
-  console.log('Contract address', CONTRACT_ADDRESS)
+  const response = await fetch('http://localhost:8000/web3/abi/')
+  const responsejson = await response.json()
+  const ABI = JSON.parse(responsejson)
 
   const contract = new web3.eth.Contract(ABI, CONTRACT_ADDRESS)
 

@@ -49,6 +49,10 @@ abi = compiled_sol['contracts']['Event.sol']['Event']['abi']
 with open("event_abi.json", "w") as file:
     json.dump(abi, file)
 
+# Save the bytecode to a file
+with open("event_bytecode.json", "w") as file:
+    json.dump(bytecode, file)
+
 # Create the contract in python
 Event = w3.eth.contract(abi=abi, bytecode=bytecode)
 
