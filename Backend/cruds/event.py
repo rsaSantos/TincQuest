@@ -47,3 +47,29 @@ def get_events(db: Session, user_id : int):
     event_list.extend(get_my_events(db, user_id))
     event_list.extend(get_owned_events(db, user_id))
     return list(set(event_list))
+
+def join_event(db : Session, event_id : int, user_id : int):
+    event = get_event(db, event_id)
+    if (user_id in [k.user_id for k in event.participants] 
+    or event.number_registrations >= event.max_registrations 
+    or event.owner_id == user_id
+    or event.event_state == event_model.EventState.OPEN):
+        print(event.number_registrations)
+        print(event.max_registrations)
+        print(event.owner_id)
+        print(event.event_state)
+        print(user_id)
+        return False
+    event.number_registrations += 1
+    participant = participant_model.Participant(
+        score=0,
+        awsered_questions="[]",
+        event_id=event_id,
+        user_id=user_id
+    )
+    db.add(participant)
+    db.commit()
+    db.refresh(participant)
+    return True
+
+
