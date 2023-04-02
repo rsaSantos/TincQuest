@@ -104,7 +104,7 @@ def answer_quiz(db: Session, event_id: int, user_id: int, awnser: list):
         if question.answer == dict["answer"]:
             participant.score += question.score
         l = eval(participant.answered_questions)
-        l.append(dict["id"])
+        l.append(dict["id"]) if dict["id"] not in l else l
         participant.answered_questions = str(l)
     db.commit()
     db.refresh(participant)
