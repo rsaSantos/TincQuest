@@ -8,7 +8,13 @@ import { useAuthStore } from '@/stores/auth'
 interface Props {
   event: GetEvent
 }
+
+interface Emits {
+  (e: 'remove_answered_questions', value: { id: number; answer: string }[]): void
+}
+
 const props = defineProps<Props>()
+const emit = defineEmits<Emits>()
 
 const authStore = useAuthStore()
 
@@ -30,7 +36,11 @@ const addAnswer = (info: { id: number; answer: string }) => {
 }
 
 const submitResponses = async () => {
-  await submitQuestions(responses.value, props.event.id)
+  const success = await submitQuestions(responses.value, props.event.id)
+  if (success) {
+    emit('remove_answered_questions', responses.value)
+    responses.value = []
+  }
 }
 
 const isParticipant = () => {
@@ -45,6 +55,9 @@ const isParticipant = () => {
 <template>
   <div v-if="event.event_state === 'NEW'">event has not yet started</div>
   <div v-else-if="!isParticipant()">You are not participating in this event</div>
+  <div v-else-if="event.event_state === 'OPEN' && event.questions.length === 0">
+    You've completed the Challanges, check the leaderboard!
+  </div>
   <div v-else-if="event.questions.length > 0">
     <button
       class="px-4 py-2 rounded-md bg-orange-500 text-white duration-300 mb-2 hover:bg-orange-600"

@@ -16,10 +16,13 @@ export const submitQuestions = async (
     })
     if (response.status === 200) {
       alert('Question submitted successfully')
+      return true
     } else {
       alert('Error submitting question')
+      return false
     }
   } catch (error) {
     alert('Error submitting question')
+    return false
   }
 }

@@ -61,7 +61,7 @@ export const joinEventBackend = async (event_id: number) => {
 
 export const joinEvent = async (event_id, event_address, entrance_fee) => {
   try {
-    //const contractResponse = await joinEventContract(event_address, entrance_fee)
+    await joinEventContract(event_address, entrance_fee)
 
     const backendResponse = await joinEventBackend(event_id)
     if (backendResponse) {

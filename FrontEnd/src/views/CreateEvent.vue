@@ -20,7 +20,7 @@ const questions = ref<{ question: string; options: string[]; score: number; answ
 ])
 
 const onSubmit = async () => {
-  /* if (distribution.value.reduce((a, b) => a + b, 0) !== 100)
+  if (distribution.value.reduce((a, b) => a + b, 0) !== 100)
     return alert('The distribution must sum 100%')
 
   const eventAddress = await createContract(
@@ -33,7 +33,7 @@ const onSubmit = async () => {
   if (!eventAddress) {
     alert('Error creating the contract')
     return
-  } */
+  }
 
   const response = await createEvent({
     name: name.value,

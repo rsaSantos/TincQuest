@@ -63,6 +63,11 @@ const submitCloseEvent = async () => {
   }
 }
 
+const removeAnsweredQuestions = (responses: { id: number; answer: string }[]) => {
+  if (!event.value?.questions) return
+  event.value.questions = event.value.questions.filter((q) => !responses.find((r) => r.id === q.id))
+}
+
 const refreshLeaderboard = setInterval(async () => {
   if (!event.value || event.value.event_state !== 'OPEN' || !authStore.token)
     clearInterval(refreshLeaderboard)
@@ -141,7 +146,11 @@ const refreshLeaderboard = setInterval(async () => {
       <hr class="pb-5" />
       <div class="pb-5">
         <EventInfo v-if="openTab === Tabs.info && event" :event="event" />
-        <EventQuestions v-if="openTab === Tabs.questions && event" :event="event" />
+        <EventQuestions
+          v-if="openTab === Tabs.questions && event"
+          :event="event"
+          @remove_answered_questions="(responses) => removeAnsweredQuestions(responses)"
+        />
       </div>
     </div>
   </div>
