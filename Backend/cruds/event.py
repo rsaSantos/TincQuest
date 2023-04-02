@@ -103,7 +103,7 @@ def answer_quiz(db: Session, event_id: int, user_id: int, awnser: list):
             return False
         if question.answer == dict["answer"]:
             participant.score += question.score
-        participant.answered_questions = str(json.load(participant.answered_questions).append(dict["id"]))
+        participant.answered_questions = str(eval(participant.answered_questions).append(dict["id"]))
     db.commit()
     db.refresh(participant)
     return True

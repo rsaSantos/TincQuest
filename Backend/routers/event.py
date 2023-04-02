@@ -23,15 +23,14 @@ def correct(event):
     if event.participants:
         for p in event.participants:
             p.answered_questions = json.loads(p.answered_questions)
+            
     if event.questions:
         for q in event.questions:
             q.options = eval(q.options)
     return event
 
 def correct_answered_questions(participant):
-    print(participant.answered_questions)
     participant.answered_questions = json.loads(participant.answered_questions)
-    print(participant.answered_questions)
     return participant
 
 @event_router.get("/myevents", response_model=list[event_schema.EventBasic])
