@@ -101,7 +101,7 @@ def answer_quiz(db: Session, event_id: int, user_id: int, awnser: list):
         question = db.query(question_crud.question_model.Question).filter(question_crud.question_model.Question.id == dict["id"]).first()
         if question is None:
             return False
-        if question.answer == dict["awnser"]:
+        if question.answer == dict["answer"]:
             participant.score += question.score
         participant.answered_questions = str(json.load(participant.answered_questions).append(dict["id"]))
     db.commit()
