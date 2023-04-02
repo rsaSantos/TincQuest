@@ -22,7 +22,7 @@ const onSubmit = async () => {
   if (distribution.value.reduce((a, b) => a + b, 0) !== 100)
     return alert('The distribution must sum 100%')
 
-  /*   const eventAddress = await createContract(
+  const eventAddress = await createContract(
     entrance_fee.value,
     base_prize.value,
     registration_prize_percentage.value,
@@ -32,7 +32,9 @@ const onSubmit = async () => {
   if (!eventAddress) {
     alert('Error creating the contract')
     return
-  }*/
+  }
+
+  console.log(eventAddress)
 
   await createEvent({
     name: name.value,
@@ -43,7 +45,6 @@ const onSubmit = async () => {
     max_registrations: iLimit.value,
     entrance_fee: entrance_fee.value,
     event_address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-    abi: 'dsfsdfgfd',
     prize: {
       base_prize: base_prize.value,
       registration_prize_percentage: registration_prize_percentage.value,
