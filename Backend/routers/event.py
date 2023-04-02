@@ -57,6 +57,8 @@ def get_event(event_id : int, current_user: Annotated[user_schema.User, Depends(
     if event.participants:
         for p in event.participants:
             if p.user_id == current_user.id:
+                print(p.answered_questions)
+                print(vars(event.questions))
                 return event
     if event.owner_id == current_user.id or event.private == False:
         return event
