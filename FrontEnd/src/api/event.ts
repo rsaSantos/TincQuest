@@ -34,11 +34,14 @@ export const createEvent = async (event: CreateEvent) => {
     })
     if (response.status === 200) {
       alert('Event created successfully')
+      return true
     } else {
       alert('Error creating event')
+      return false
     }
   } catch (error) {
     alert('Error creating event')
+    return false
   }
 }
 
