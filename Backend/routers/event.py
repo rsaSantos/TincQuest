@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from Backend.auth.auth import get_current_user
 from ..schemas import event as event_schema
 from ..schemas import user as user_schema
+from ..schemas import participant as participant_schema
 from ..cruds import event as event_crud
 
 from ..models import event as event_model
@@ -26,6 +27,10 @@ def correct(event):
         for q in event.questions:
             q.options = eval(q.options)
     return event
+
+def correct_awsered_questions(participant):
+    participant.awsered_questions = json.loads(participant.awsered_questions)
+    return participant
 
 @event_router.get("/myevents", response_model=list[event_schema.EventBasic])
 def get_my_events(current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
@@ -60,6 +65,10 @@ def create_event(event: event_schema.EventCreate, current_user: Annotated[user_s
 def join_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
     if not event_crud.join_event(db, event_id, current_user.id):
         raise HTTPException(status_code=400, detail="user can´t join event")
+
+@event_router.get("/event/leaderboard/{event_id}", response_model=list[participant_schema.ParticipantUser])
+def get_leaderboard(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
+    return [correct_awsered_questions(e) for e in event_crud.get_event_participants(db, event_id)]
 
 @event_router.post("/event/terminate/{event_id}", response_model=bool)
 def terminate_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):

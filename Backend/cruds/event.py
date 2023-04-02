@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from ..schemas import event as event_schema
 from ..models import participant as participant_model
 from ..models import event as event_model
+from ..models import user as user_model
 from ..cruds import prize as prize_crud
 from ..cruds import question as question_crud
 
@@ -71,5 +72,9 @@ def join_event(db : Session, event_id : int, user_id : int):
     db.commit()
     db.refresh(participant)
     return True
+
+def get_event_participants(db: Session, event_id: int):
+    return db.query(participant_model.Participant).filter(participant_model.Participant.event_id == event_id).join(
+        user_model.User).order_by(participant_model.Participant.score.desc()).all()
 
 
