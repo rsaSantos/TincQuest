@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/stores/auth'
 import Web3 from 'web3'
 
 const CONTRACT_ADDRESS = '0x2faF2A8f2F522c5728332d635F283059AFa006a7' // TODO: REMOVE
@@ -10,8 +11,7 @@ declare global {
 
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'))
 
-export const joinEvent = async (eventId: number) => {
-  console.log('Joining event', eventId)
+export const joinEventContract = async () => {
   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
 
   if (!accounts) {
@@ -39,4 +39,25 @@ export const joinEvent = async (eventId: number) => {
     gasPrice: web3.utils.toWei('1', 'gwei'),
     nonce: nonce
   })
+}
+
+export const joinEventBackend = async (event_id: number) => {
+  try {
+    const authStore = useAuthStore()
+    const response = await fetch('http://localhost:8000/joinEvent/' + event_id, {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authStore.token}`
+      }
+    })
+  } catch (error) {
+    alert('Somethin went wrong joining Event')
+  }
+}
+
+export const joinEvent = async (event_id) => {
+  /*   const contractResponse = await joinEventContract(event_id) */
+
+  const backendResponse = await joinEventBackend(event_id)
 }
