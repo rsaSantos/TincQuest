@@ -46,7 +46,7 @@ class EventDetail(EventBase):
     
     owner: user_schema.User
     prize: prize_schema.Prize
-    participants: list[participant_schema.Participant]
+    participants: list[participant_schema.ParticipantInfo]
     questions: list[question_schema.Question]
 
     class Config:

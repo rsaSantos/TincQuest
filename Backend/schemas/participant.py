@@ -11,6 +11,15 @@ class Participant(ParticipantBase):
     class Config:
         orm_mode = True
 
+class ParticipantInfo(BaseModel):
+    score : int
+    awsered_questions: List[int]
+    user_id: int
+
+    class Config:
+        orm_mode = True
+
+
 class ParticipantRead(ParticipantBase):
     score : int
     awsered_questions: str
