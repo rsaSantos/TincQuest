@@ -8,7 +8,7 @@ class Participant(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     score = Column(Integer)
-    awsered_questions = Column(String)
+    answered_questions = Column(String)
 
     user_id = Column(Integer, ForeignKey("users.id"))
     event_id = Column(Integer, ForeignKey("events.id"))

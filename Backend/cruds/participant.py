@@ -7,7 +7,7 @@ from ..models import user as user_model
 def create_participant_from_participant_create(participant: participant_schema.ParticipantBase) -> participant_model.Participant:
     return participant_model.Participant(
         score=participant.score,
-        awsered_questions=str(participant.awsered_questions),
+        answered_questions=str(participant.answered_questions),
     )
 
 def create_question(db: Session,participant: participant_schema.ParticipantBase):

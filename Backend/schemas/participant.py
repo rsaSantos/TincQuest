@@ -7,14 +7,14 @@ class ParticipantBase(BaseModel):
 
 class Participant(ParticipantBase):
     score : int
-    awsered_questions: List[int]
+    answered_questions: List[int]
 
     class Config:
         orm_mode = True
 
 class ParticipantInfo(BaseModel):
     score : int
-    awsered_questions: List[int]
+    answered_questions: List[int]
     user_id: int
 
     class Config:
@@ -22,7 +22,7 @@ class ParticipantInfo(BaseModel):
 
 class ParticipantUser(BaseModel):
     score : int
-    awsered_questions: List[int]
+    answered_questions: List[int]
     user_id: int
     user: user_schema.User
 
@@ -31,7 +31,7 @@ class ParticipantUser(BaseModel):
 
 class ParticipantWinner(ParticipantBase):
     score : int
-    awsered_questions: str
+    answered_questions: str
     wallet_address: str
 
     class Config:

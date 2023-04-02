@@ -59,7 +59,7 @@ def join_event(db : Session, event_id : int, user_id : int):
     event.number_registrations += 1
     participant = participant_model.Participant(
         score=0,
-        awsered_questions="[]",
+        answered_questions="[]",
         event_id=event_id,
         user_id=user_id
     )
@@ -88,6 +88,23 @@ def close_event(db: Session, event_id: int, user_id: int):
     event.event_state = event_model.EventState.CLOSE
     db.commit()
     db.refresh(event)
+    return True
+
+def answer_quiz(db: Session, event_id: int, user_id: int, question_id: int, awnser: str):
+    event = get_event(db, event_id)
+    if event.event_state != event_model.EventState.OPEN:
+        return False
+    participant = db.query(participant_model.Participant).filter(participant_model.Participant.event_id == event_id, participant_model.Participant.user_id == user_id).first()
+    if participant is None:
+        return False
+    question = db.query(question_crud.question_model.Question).filter(question_crud.question_model.Question.id == question_id).first()
+    if question is None:
+        return False
+    if question.answer == awnser:
+        participant.score += 1
+    participant.answered_questions = participant.answered_questions + f",{question_id}"
+    db.commit()
+    db.refresh(participant)
     return True
 
 

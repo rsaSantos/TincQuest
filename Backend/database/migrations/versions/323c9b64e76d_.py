@@ -46,7 +46,7 @@ def downgrade() -> None:
     op.create_table('participants',
     sa.Column('id', sa.INTEGER(), nullable=False),
     sa.Column('score', sa.INTEGER(), nullable=True),
-    sa.Column('awsered_questions', sa.VARCHAR(), nullable=True),
+    sa.Column('answered_questions', sa.VARCHAR(), nullable=True),
     sa.Column('user_id', sa.INTEGER(), nullable=True),
     sa.Column('event_id', sa.INTEGER(), nullable=True),
     sa.ForeignKeyConstraint(['event_id'], ['events.id'], ),

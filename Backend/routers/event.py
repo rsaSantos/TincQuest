@@ -22,14 +22,14 @@ def correct(event):
         event.prize.distribution = json.loads(event.prize.distribution)
     if event.participants:
         for p in event.participants:
-            p.awsered_questions = json.loads(p.awsered_questions)
+            p.answered_questions = json.loads(p.answered_questions)
     if event.questions:
         for q in event.questions:
             q.options = eval(q.options)
     return event
 
-def correct_awsered_questions(participant):
-    participant.awsered_questions = json.loads(participant.awsered_questions)
+def correct_answered_questions(participant):
+    participant.answered_questions = json.loads(participant.answered_questions)
     return participant
 
 @event_router.get("/myevents", response_model=list[event_schema.EventBasic])
@@ -47,7 +47,7 @@ def get_events(current_user: Annotated[user_schema.User, Depends(get_current_use
 @event_router.get("/event/{event_id}", response_model=event_schema.EventDetail)
 def get_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
     event = correct(event_crud.get_event(db, event_id))
-    event.participants = [correct_awsered_questions(e) for e in event.participants]
+    event.participants = [correct_answered_questions(e) for e in event.participants]
     if event.event_state != event_model.EventState.OPEN:
         event.questions = []
     if event.participants:
@@ -69,7 +69,7 @@ def join_event(event_id : int, current_user: Annotated[user_schema.User, Depends
 
 @event_router.get("/event/leaderboard/{event_id}", response_model=list[participant_schema.ParticipantUser])
 def get_leaderboard(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
-    return [correct_awsered_questions(e) for e in event_crud.get_event_participants(db, event_id)]
+    return [correct_answered_questions(e) for e in event_crud.get_event_participants(db, event_id)]
 
 @event_router.put("/openEvent/{event_id}")
 def open_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
@@ -86,3 +86,7 @@ def terminate_event(event_id : int, current_user: Annotated[user_schema.User, De
     if(web3_event.terminate_event( db, ABI, contract_address , event_id)):
         if not event_crud.close_event(db, event_id, current_user.id):
             raise HTTPException(status_code=400, detail="user can´t close event")
+        
+@event_router.put("/answer_quiz/{event_id}")
+def answer_quiz(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
+    pass
