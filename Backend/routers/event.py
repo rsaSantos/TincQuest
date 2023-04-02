@@ -53,7 +53,7 @@ def get_event(event_id : int, current_user: Annotated[user_schema.User, Depends(
         for p in event.participants:
             if p.user_id == current_user.id:
                 return event
-    elif event.owner_id == current_user.id:
+    if event.owner_id == current_user.id:
         return event
     raise HTTPException(status_code=400, detail="user is not part of event")
     
@@ -70,6 +70,11 @@ def join_event(event_id : int, current_user: Annotated[user_schema.User, Depends
 def get_leaderboard(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
     return [correct_awsered_questions(e) for e in event_crud.get_event_participants(db, event_id)]
 
+@event_router.get("/openEvent/{event_id}")
+def open_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
+    if not event_crud.open_event(db, event_id, current_user.id):
+        raise HTTPException(status_code=400, detail="user can´t open event")
+
 @event_router.post("/event/terminate/{event_id}", response_model=bool)
 def terminate_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
     # Get ABI and event contract address
@@ -78,8 +83,5 @@ def terminate_event(event_id : int, current_user: Annotated[user_schema.User, De
 
     # Terminate the event in the blockchain
     if(web3_event.terminate_event( db, ABI, contract_address , event_id)):
-        # TODO: 
-        # 1. Alterar o estado do evento para terminado
-        return True
-    else:
-        return False
+        if not event_crud.close_event(db, event_id, current_user.id):
+            raise HTTPException(status_code=400, detail="user can´t close event")

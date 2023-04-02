@@ -54,12 +54,7 @@ def join_event(db : Session, event_id : int, user_id : int):
     if (user_id in [k.user_id for k in event.participants] 
     or event.number_registrations >= event.max_registrations 
     or event.owner_id == user_id
-    or event.event_state == event_model.EventState.OPEN):
-        print(event.number_registrations)
-        print(event.max_registrations)
-        print(event.owner_id)
-        print(event.event_state)
-        print(user_id)
+    or event.event_state != event_model.EventState.OPEN):
         return False
     event.number_registrations += 1
     participant = participant_model.Participant(
@@ -76,5 +71,23 @@ def join_event(db : Session, event_id : int, user_id : int):
 def get_event_participants(db: Session, event_id: int):
     return db.query(participant_model.Participant).filter(participant_model.Participant.event_id == event_id).join(
         user_model.User).order_by(participant_model.Participant.score.desc()).all()
+
+def open_event(db: Session, event_id: int, user_id: int):
+    event = get_event(db, event_id)
+    if event.event_state != event_model.EventState.NEW or event.owner_id != user_id:
+        return False
+    event.event_state = event_model.EventState.OPEN
+    db.commit()
+    db.refresh(event)
+    return True
+
+def close_event(db: Session, event_id: int, user_id: int):
+    event = get_event(db, event_id)
+    if event.event_state != event_model.EventState.OPEN or event.owner_id != user_id:
+        return False
+    event.event_state = event_model.EventState.CLOSE
+    db.commit()
+    db.refresh(event)
+    return True
 
 
