@@ -57,7 +57,7 @@ def get_event(event_id : int, current_user: Annotated[user_schema.User, Depends(
         for p in event.participants:
             if p.user_id == current_user.id:
                 return event
-    if event.owner_id == current_user.id:
+    if event.owner_id == current_user.id or event.private == False:
         return event
     raise HTTPException(status_code=400, detail="user is not part of event")
     
