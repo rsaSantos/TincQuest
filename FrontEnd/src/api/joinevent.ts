@@ -11,13 +11,17 @@ const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'))
 
 export const joinEventContract = async (event_address, entrance_fee: number) => {
   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+  let account = accounts[0]
+
+  const userAccount = await window.prompt('Please enter the Ethereum account you want to use:', account);
+  if (userAccount) {
+    account = userAccount;
+  }
 
   if (!accounts) {
     throw new Error('No accounts found')
   }
 
-  // Get address of first account
-  const account = accounts[0]
 
   // Read ABI from file
   const response = await fetch('http://localhost:8000/web3/abi/')

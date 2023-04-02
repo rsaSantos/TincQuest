@@ -9,7 +9,13 @@ export const createContract = async (
   distribution: number[]
 ) => {
   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-  const account = accounts[0]
+  let account = accounts[0]
+
+  const userAccount = await window.prompt('Please enter the Ethereum account you want to use:', account);
+
+  if (userAccount) {
+    account = userAccount;
+  }
 
   // Read ABI from file
   const response = await fetch('http://localhost:8000/web3/abi/')
