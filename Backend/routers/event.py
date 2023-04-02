@@ -68,19 +68,23 @@ def create_event(event: event_schema.EventCreate, current_user: Annotated[user_s
 
 @event_router.put("/joinEvent/{event_id}")
 def join_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
-    if not event_crud.join_event(db, event_id, current_user.id):
+    event = event_crud.join_event(db, event_id, current_user.id)
+    if not event:
         raise HTTPException(status_code=400, detail="user can´t join event")
+    return correct(event)
 
 @event_router.get("/event/leaderboard/{event_id}", response_model=list[participant_schema.ParticipantUser])
 def get_leaderboard(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
     return [correct_answered_questions(e) for e in event_crud.get_event_participants(db, event_id)]
 
-@event_router.put("/openEvent/{event_id}")
+@event_router.put("/openEvent/{event_id}", response_model=event_schema.EventDetail)
 def open_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
-    if not event_crud.open_event(db, event_id, current_user.id):
+    event = event_crud.open_event(db, event_id, current_user.id)
+    if not event:
         raise HTTPException(status_code=400, detail="user can´t open event")
+    return correct(event)
 
-@event_router.put("/event/terminate/{event_id}", response_model=bool)
+@event_router.put("/event/terminate/{event_id}", response_model=event_schema.EventDetail)
 def terminate_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
     # Get ABI and event contract address
     ABI = event_crud.get_event(db, event_id).abi
@@ -88,8 +92,12 @@ def terminate_event(event_id : int, current_user: Annotated[user_schema.User, De
 
     # Terminate the event in the blockchain
     if(web3_event.terminate_event( db, ABI, contract_address , event_id)):
-        if not event_crud.close_event(db, event_id, current_user.id):
+        event = event_crud.close_event(db, event_id, current_user.id)
+        if not event:
             raise HTTPException(status_code=400, detail="user can´t close event")
+        return correct(event)
+    
+    raise HTTPException(status_code=400, detail="blockchain error")
         
 @event_router.put("/answer_quiz/{event_id}")
 def answer_quiz(event_id : int, answer: list, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):

@@ -2,6 +2,7 @@
 import { createEvent } from '@/api/event'
 import { ref } from 'vue'
 import { createContract } from '@/api/events'
+import router from '@/router/router'
 
 const name = ref('')
 const description = ref('')
@@ -36,7 +37,7 @@ const onSubmit = async () => {
 
   console.log(eventAddress)
 
-  await createEvent({
+  const response = await createEvent({
     name: name.value,
     description: description.value,
     private: privEvent.value,
@@ -53,6 +54,9 @@ const onSubmit = async () => {
     number_registrations: 10,
     questions: questions.value
   })
+  if (response) {
+    router.push('/ownedevents')
+  }
 }
 </script>
 <template>

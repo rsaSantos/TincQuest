@@ -55,7 +55,7 @@ def join_event(db : Session, event_id : int, user_id : int):
     or event.number_registrations >= event.max_registrations 
     or event.owner_id == user_id
     or event.event_state == event_model.EventState.CLOSED):
-        return False
+        return None
     event.number_registrations += 1
     participant = participant_model.Participant(
         score=0,
@@ -66,7 +66,7 @@ def join_event(db : Session, event_id : int, user_id : int):
     db.add(participant)
     db.commit()
     db.refresh(participant)
-    return True
+    return get_event(db, event_id)
 
 def get_event_participants(db: Session, event_id: int):
     return db.query(participant_model.Participant).filter(participant_model.Participant.event_id == event_id).join(
@@ -75,20 +75,20 @@ def get_event_participants(db: Session, event_id: int):
 def open_event(db: Session, event_id: int, user_id: int):
     event = get_event(db, event_id)
     if event.event_state != event_model.EventState.NEW or event.owner_id != user_id:
-        return False
+        return None
     event.event_state = event_model.EventState.OPEN
     db.commit()
     db.refresh(event)
-    return True
+    return get_event(db, event_id)
 
 def close_event(db: Session, event_id: int, user_id: int):
     event = get_event(db, event_id)
     if event.event_state != event_model.EventState.OPEN or event.owner_id != user_id:
-        return False
+        return None
     event.event_state = event_model.EventState.CLOSE
     db.commit()
     db.refresh(event)
-    return True
+    return get_event(db, event_id)
 
 def answer_quiz(db: Session, event_id: int, user_id: int, awnser: list):
     event = get_event(db, event_id)
@@ -101,7 +101,7 @@ def answer_quiz(db: Session, event_id: int, user_id: int, awnser: list):
         question = db.query(question_crud.question_model.Question).filter(question_crud.question_model.Question.id == dict["id"]).first()
         if question is None:
             return False
-        if question.answer == dict["awnser"]:
+        if question.answer == dict["answer"]:
             participant.score += question.score
         participant.answered_questions = str(json.load(participant.answered_questions).append(dict["id"]))
     db.commit()
