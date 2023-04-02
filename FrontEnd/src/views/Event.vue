@@ -38,6 +38,13 @@ const isParticipant = () => {
   return false
 }
 
+const submitJoinEvent = async () => {
+  if (typeof id === 'string') {
+    const new_event = await joinEvent(parseInt(id))
+    if (new_event) event.value = new_event
+  }
+}
+
 const refreshLeaderboard = setInterval(async () => {
   if (!event.value || event.value.event_state !== 'OPEN' || !authStore.token)
     clearInterval(refreshLeaderboard)
@@ -61,7 +68,7 @@ const refreshLeaderboard = setInterval(async () => {
               !isParticipant()
             "
             class="bg-white px-2 py-1 my-2 rounded-md hover:bg-slate-400 text-black duration-300"
-            @click="typeof id === 'string' ? joinEvent(parseInt(id)) : ''"
+            @click="typeof id === 'string' ? submitJoinEvent() : ''"
           >
             Join Event
           </button>

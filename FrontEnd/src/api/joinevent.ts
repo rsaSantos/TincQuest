@@ -51,13 +51,27 @@ export const joinEventBackend = async (event_id: number) => {
         Authorization: `Bearer ${authStore.token}`
       }
     })
+    if (response.status === 200) {
+      const jsonResponse = await response.json()
+      return jsonResponse
+    }
   } catch (error) {
     alert('Somethin went wrong joining Event')
   }
 }
 
 export const joinEvent = async (event_id) => {
-  /*   const contractResponse = await joinEventContract(event_id) */
+  try {
+    /*   const contractResponse = await joinEventContract(event_id) */
 
-  const backendResponse = await joinEventBackend(event_id)
+    const backendResponse = await joinEventBackend(event_id)
+    if (backendResponse) {
+      alert('Event joined successfully')
+      return backendResponse
+    } else {
+      alert('Somethin went wrong joining Event')
+    }
+  } catch (error) {
+    alert('Somethin went wrong joining Event')
+  }
 }
