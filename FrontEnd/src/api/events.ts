@@ -29,6 +29,8 @@ export const createContract = async (
   const tincquestaddress = await (await fetch('http://localhost:8000/web3/tincaddr')).json()
 
   // Deploy contract (request user the base prize)
+  base_prize = base_prize * (10**18)
+  entrance_fee = entrance_fee * (10**18)
   const contractInstance = await contract
     .deploy({
       data: bytecode,
@@ -45,8 +47,11 @@ export const createContract = async (
       nonce: nonce,
       gas: 3000000,
       gasPrice: web3.utils.toWei('2', 'gwei'),
-      value: base_prize ** 18
+      value: base_prize
     })
+
+    console.log(base_prize)
+    console.log(entrance_fee)
 
   return contractInstance.options.address
 }
