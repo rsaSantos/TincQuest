@@ -1,8 +1,6 @@
 import { useAuthStore } from '@/stores/auth'
 import Web3 from 'web3'
 
-const CONTRACT_ADDRESS = '0x2faF2A8f2F522c5728332d635F283059AFa006a7' // TODO: REMOVE
-
 declare global {
   interface Window {
     ethereum: any
@@ -11,7 +9,7 @@ declare global {
 
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'))
 
-export const joinEventContract = async () => {
+export const joinEventContract = async (event_address, entrance_fee : number) => {
   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
 
   if (!accounts) {
@@ -27,14 +25,13 @@ export const joinEventContract = async () => {
   const responsejson = await response.json()
   const ABI = JSON.parse(responsejson)
 
-  const contract = new web3.eth.Contract(ABI, CONTRACT_ADDRESS)
+  const contract = new web3.eth.Contract(ABI, event_address)
 
   const nonce = await web3.eth.getTransactionCount(account)
 
-  //// Enroll in event: pay 0.1 ETH
   await contract.methods.enroll().send({
     from: account,
-    value: web3.utils.toWei('0.1', 'ether'),
+    value: web3.utils.toWei(entrance_fee.toString(), 'ether'),
     gas: 3000000,
     gasPrice: web3.utils.toWei('1', 'gwei'),
     nonce: nonce
@@ -53,20 +50,24 @@ export const joinEventBackend = async (event_id: number) => {
     })
     if (response.status === 200) {
       const jsonResponse = await response.json()
+
       return jsonResponse
+    } else {
+      alert('Somethin went wrong joining Event')
     }
   } catch (error) {
     alert('Somethin went wrong joining Event')
   }
 }
 
-export const joinEvent = async (event_id) => {
+export const joinEvent = async (event_id, event_address, entrance_fee) => {
   try {
-    /*   const contractResponse = await joinEventContract(event_id) */
+    const contractResponse = await joinEventContract(event_address, entrance_fee)
 
     const backendResponse = await joinEventBackend(event_id)
     if (backendResponse) {
       alert('Event joined successfully')
+
       return backendResponse
     } else {
       alert('Somethin went wrong joining Event')
