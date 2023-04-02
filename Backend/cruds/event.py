@@ -85,7 +85,7 @@ def close_event(db: Session, event_id: int, user_id: int):
     event = get_event(db, event_id)
     if event.event_state != event_model.EventState.OPEN or event.owner_id != user_id:
         return None
-    event.event_state = event_model.EventState.CLOSE
+    event.event_state = event_model.EventState.CLOSED
     db.commit()
     db.refresh(event)
     return get_event(db, event_id)
