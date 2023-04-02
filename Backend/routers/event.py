@@ -29,7 +29,9 @@ def correct(event):
     return event
 
 def correct_answered_questions(participant):
+    print(participant.answered_questions)
     participant.answered_questions = json.loads(participant.answered_questions)
+    print(participant.answered_questions)
     return participant
 
 @event_router.get("/myevents", response_model=list[event_schema.EventBasic])
@@ -50,7 +52,6 @@ def get_event(event_id : int, current_user: Annotated[user_schema.User, Depends(
     if not event:
         raise HTTPException(status_code=404, detail="event not found")
     event = correct(event)
-    event.participants = [correct_answered_questions(e) for e in event.participants]
     if event.event_state != event_model.EventState.OPEN:
         event.questions = []
     if event.participants:
