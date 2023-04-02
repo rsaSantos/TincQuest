@@ -66,7 +66,7 @@ def get_event(event_id : int, current_user: Annotated[user_schema.User, Depends(
 def create_event(event: event_schema.EventCreate, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
     event_crud.create_event(db, event, current_user.id)
 
-@event_router.put("/joinEvent/{event_id}")
+@event_router.put("/joinEvent/{event_id}", response_model=event_schema.EventDetail)
 def join_event(event_id : int, current_user: Annotated[user_schema.User, Depends(get_current_user)], db: Session = Depends(get_db)):
     event = event_crud.join_event(db, event_id, current_user.id)
     if not event:
