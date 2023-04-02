@@ -16,7 +16,7 @@ const base_prize = ref(0)
 const registration_prize_percentage = ref(0)
 const distribution = ref([100])
 const questions = ref<{ question: string; options: string[]; score: number; answer: string }[]>([
-  { question: '', options: [], answer: '', score: 0 }
+  { question: '', options: [], answer: '', score: 1 }
 ])
 
 const onSubmit = async () => {
@@ -201,19 +201,33 @@ const onSubmit = async () => {
                   class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
                 />
               </div>
-              <div class="flex flex-col pt-5 items-center">
-                <label>Correct Answer</label>
-                <div>
-                  <input
-                    :key="i"
-                    v-model="questions[i].answer"
-                    placeholder="Write the correct answer"
-                    type="text"
-                    class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
-                  />
+              <div class="flex justify-center space-x-2">
+                <div class="flex flex-col pt-5 items-center">
+                  <label>Correct Answer</label>
+                  <div>
+                    <input
+                      :key="i"
+                      v-model="questions[i].answer"
+                      placeholder="Write the correct answer"
+                      type="text"
+                      class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
+                    />
+                  </div>
+                </div>
+                <div class="flex flex-col pt-5 items-center">
+                  <label>Score</label>
+                  <div>
+                    <input
+                      :key="i"
+                      :min="1"
+                      v-model="questions[i].score"
+                      placeholder="Write the correct answer"
+                      type="text"
+                      class="rounded-md placeholder:text-white p-2 bg-slate-500 text-white"
+                    />
+                  </div>
                 </div>
               </div>
-
               <div>
                 <span>Answer Options</span>
                 <div class="flex flex-col pt-5 space-y-2">
@@ -248,7 +262,7 @@ const onSubmit = async () => {
             <div class="flex justify-center">
               <button
                 type="button"
-                @click="questions.push({ question: '', options: [], answer: '', score: 0 })"
+                @click="questions.push({ question: '', options: [], answer: '', score: 1 })"
                 class="bg-slate-500 rounded-lg font-semibold text-white p-2 hover:bg-slate-600 duration-300"
               >
                 New Challenge +
