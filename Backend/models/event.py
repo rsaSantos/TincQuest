@@ -22,7 +22,6 @@ class Event(Base):
     final_date = Column(DateTime)
     event_address = Column(String)
     event_state = Column(String)
-    abi = Column(String)
 
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("User", back_populates="ownedEvents")

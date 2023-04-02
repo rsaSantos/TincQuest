@@ -28,7 +28,6 @@ class EventCreate(EventBase):
     inicial_date: datetime
     final_date: datetime
     event_address: str
-    abi:str
     prize: prize_schema.Prize
     questions: list[question_schema.QuestionCreate]
 
