@@ -71,16 +71,54 @@ export const createContract = async (
 export const getOwnedEvents = async () => {
   const authStore = useAuthStore()
   try {
-    const response = await fetch('http://localhost:8000/ownedEvent/', {
+    const response = await fetch('http://localhost:8000/ownedEvents/', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authStore.token}`
       }
     })
     if (response.status === 200) {
-
       const data = await response.json()
-      console.log(data)
+      return data
+    } else {
+      alert('Error creating event')
+    }
+  } catch (error) {
+    alert('Error getting owned events')
+  }
+}
+
+export const getEvents = async () => {
+  const authStore = useAuthStore()
+  try {
+    const response = await fetch('http://localhost:8000/events/', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authStore.token}`
+      }
+    })
+    if (response.status === 200) {
+      const data = await response.json()
+      return data
+    } else {
+      alert('Error creating event')
+    }
+  } catch (error) {
+    alert('Error getting owned events')
+  }
+}
+
+export const getMyEvents = async () => {
+  const authStore = useAuthStore()
+  try {
+    const response = await fetch('http://localhost:8000/myevents/', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authStore.token}`
+      }
+    })
+    if (response.status === 200) {
+      const data = await response.json()
       return data
     } else {
       alert('Error creating event')

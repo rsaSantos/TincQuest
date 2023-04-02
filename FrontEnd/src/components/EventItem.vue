@@ -13,16 +13,18 @@ defineProps<Props>()
       <span class="font-bold">Event Name:</span>
       <span>{{ event.name }}</span>
     </div>
-    <div class="flex justify-between"><span class="font-bold">Prize:</span>{{ event.prize }}$</div>
     <div class="flex justify-between">
-      <span class="font-bold">Start Date:</span>{{ event.startDate }}
+      <span class="font-bold">Prize:</span>{{ event.prize.base_prize }} eth
     </div>
     <div class="flex justify-between">
-      <span class="font-bold">End Date:</span>{{ event.endDate }}
+      <span class="font-bold">Start Date:</span>{{ event.inicial_date.split('T')[0] }}
+    </div>
+    <div class="flex justify-between">
+      <span class="font-bold">End Date:</span>{{ event.final_date.split('T')[0] }}
     </div>
     <div class="flex justify-between">
       <span class="font-bold">Participants:</span
-      >{{ event.nParticipants + '/' + event.participantsLimit }}
+      >{{ event.number_registrations + '/' + event.max_registrations }}
     </div>
   </div>
 </template>

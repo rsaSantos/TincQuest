@@ -32,3 +32,22 @@ export const registerRequest = async (register: Register) => {
     console.log(error)
   }
 }
+
+export const getUserInfo = async (token: string) => {
+  try {
+    const response = await fetch('http://localhost:8000/user/me/', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    })
+    if (response.status === 200) {
+      const data: { username: string; name: string; id: number } = await response.json()
+      return data
+    } else {
+      alert('Error creating event')
+    }
+  } catch (error) {
+    alert('Error getting User Info')
+  }
+}

@@ -1,5 +1,6 @@
 from typing import List
 from pydantic import BaseModel
+from ..schemas import user as user_schema
 
 class ParticipantBase(BaseModel):
     id: int
@@ -11,9 +12,19 @@ class Participant(ParticipantBase):
     class Config:
         orm_mode = True
 
-class ParticipantRead(ParticipantBase):
+class ParticipantInfo(BaseModel):
     score : int
-    awsered_questions: str
+    awsered_questions: List[int]
+    user_id: int
+
+    class Config:
+        orm_mode = True
+
+class ParticipantUser(BaseModel):
+    score : int
+    awsered_questions: List[int]
+    user_id: int
+    user: user_schema.User
 
     class Config:
         orm_mode = True

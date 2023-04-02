@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { getOwnedEvents } from '@/api/events'
 import EventsList from '@/components/EventsList.vue'
-/* const response = await getOwnedEvents()
-console.log(response) */
+import { EventSimple } from '@/models/eventModel'
+import { onMounted, ref } from 'vue'
+const events = ref<EventSimple[]>([])
+
+onMounted(async () => {
+  events.value = await getOwnedEvents()
+})
 </script>
 
 <template>
-  <EventsList />
+  <EventsList :events="events" />
 </template>
