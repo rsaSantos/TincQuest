@@ -30,6 +30,7 @@ def correct(event):
     return event
 
 def correct_answered_questions(participant):
+    print("aaaaaaaaaaaaaaaaaaa", vars(participant))
     participant.answered_questions = json.loads(participant.answered_questions)
     return participant
 
