@@ -1,4 +1,4 @@
-# TinkQuest
+# TincQuest
 
 Hackathon BugsByte 2023 (https://bugsbyte.cesium.di.uminho.pt/)
 
