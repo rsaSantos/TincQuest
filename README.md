@@ -1,6 +1,8 @@
 # TinkQuest
 
-Hackathon BugsByte 2023.
+Hackathon BugsByte 2023 (https://bugsbyte.cesium.di.uminho.pt/)
+
+Resultado: 1º Lugar
 
 ## FastAPI Installation
 
