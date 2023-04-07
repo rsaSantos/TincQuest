@@ -2,7 +2,8 @@
 
 Hackathon BugsByte 2023 (https://bugsbyte.cesium.di.uminho.pt/)
 
-Resultado: 1º Lugar
+Resultado: 1º Lugar Vencedor Geral
+           Vencedor TEMA WEB3
 
 ## FastAPI Installation
 
@@ -32,3 +33,8 @@ pip install "passlib[bcrypt]"
 uvicorn Backend.main:tincQuest --reload
 
 http://127.0.0.1:8000/docs
+
+
+## Frontend
+yarn install
+yarn run dev
